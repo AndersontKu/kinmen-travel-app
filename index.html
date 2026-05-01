@@ -1,772 +1,560 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>金門智慧旅遊 · 四天三夜</title>
-<!-- ★PWA Meta Tags: 全螢幕執行、隱藏網址列 -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="金門旅遊">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0f1a0e">
-<meta name="application-name" content="金門旅遊">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f1a0e'/><text y='.9em' font-size='80' x='10'>⚓</text></svg>">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
-
-/* ══ 深色主題（預設）══ */
+ @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root {
-  --bg: #0f1a0e;
-  --bg2: #162015;
-  --bg3: #1e2d1c;
-  --card: #1a2818;
-  --card2: #213120;
-  --border: #2d4229;
-  --green: #4a7c59;
-  --green-light: #6aad7e;
-  --green-bright: #8fcca0;
-  --red: #c0392b;
-  --red-warm: #e05c44;
-  --gold: #d4a843;
-  --gold-light: #f0c870;
-  --cream: #f5ead6;
-  --text: #e8dfc8;
-  --text2: #b8ad97;
-  --text3: #7a7266;
-  --white: #faf5ec;
-  --tag-bg: rgba(74,124,89,0.15);
-  --shadow: 0 8px 32px rgba(0,0,0,0.5);
+--bg: #0f1a0e;
+--bg2: #162015;
+--bg3: #1e2d1c;
+--card: #1a2818;
+--card2: #213120;
+--border: #2d4229;
+--green: #4a7c59;
+--green-light: #6aad7e;
+--green-bright: #8fcca0;
+--red: #c0392b;
+--red-warm: #e05c44;
+--gold: #d4a843;
+--gold-light: #f0c870;
+--cream: #f5ead6;
+--text: #e8dfc8;
+--text2: #b8ad97;
+--text3: #7a7266;
+--white: #faf5ec;
+--tag-bg: rgba(74,124,89,0.15);
+--shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
-
-/* ══ 淺色主題 ══ */
-body.light {
-  --bg: #f4f1ea;
-  --bg2: #ede8df;
-  --bg3: #e4ddd2;
-  --card: #faf7f2;
-  --card2: #f0ebe0;
-  --border: #c8bfad;
-  --green: #3d6b4a;
-  --green-light: #4e8a5f;
-  --green-bright: #2f5c3a;
-  --red: #a83020;
-  --red-warm: #c44a30;
-  --gold: #b8880a;
-  --gold-light: #a07008;
-  --cream: #2a1f0e;
-  --text: #1e1a12;
-  --text2: #4a4030;
-  --text3: #8a7a66;
-  --white: #1a1208;
-  --tag-bg: rgba(61,107,74,0.12);
-  --shadow: 0 8px 32px rgba(0,0,0,0.15);
-}
-
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
 html, body {
-  height:100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: 16px; /* ★修改1: 14px→16px */
-  line-height: 1.6;
-  overflow: hidden;
-  transition: background 0.3s, color 0.3s;
+height:100%;
+background: var(--bg);
+color: var(--text);
+font-family: 'Noto Sans TC', sans-serif;
+font-size: 14px;
+line-height: 1.6;
+overflow: hidden;
 }
-
 /* ── APP SHELL ── */
 #app {
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-  max-width: 430px;
-  margin: 0 auto;
-  position: relative;
-  background: var(--bg);
-  overflow: hidden;
+display: flex;
+flex-direction: column;
+height: 100dvh;
+max-width: 430px;
+margin: 0 auto;
+position: relative;
+background: var(--bg);
+overflow: hidden;
 }
-
 /* ── STATUS BAR ── */
 .status-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 20px 4px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text2);
-  font-family: 'DM Mono', monospace;
-  flex-shrink: 0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 20px 4px;
+font-size: 11px;
+font-weight: 500;
+color: var(--text2);
+font-family: 'DM Mono', monospace;
+flex-shrink: 0;
 }
-
 /* ── HEADER ── */
 .app-header {
-  padding: 4px 20px 12px;
-  flex-shrink: 0;
-  position: relative;
-  border-bottom: 1px solid var(--border);
+padding: 4px 20px 12px;
+flex-shrink: 0;
+position: relative;
+border-bottom: 1px solid var(--border);
 }
 .header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
 }
 .app-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 2px;
+font-family: 'Noto Serif TC', serif;
+font-size: 20px;
+font-weight: 700;
+color: var(--white);
+letter-spacing: 2px;
 }
 .app-subtitle {
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-top: 1px;
-}
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+font-size: 10px;
+color: var(--text3);
+letter-spacing: 3px;
+text-transform: uppercase;
+margin-top: 1px;
 }
 .header-badge {
-  background: linear-gradient(135deg, var(--red), var(--red-warm));
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 1px;
+background: linear-gradient(135deg, var(--red), var(--red-warm));
+color: #fff;
+font-size: 10px;
+font-weight: 700;
+padding: 4px 10px;
+border-radius: 20px;
+letter-spacing: 1px;
 }
-
-/* ★修改4: 深淺切換按鈕 */
-.theme-toggle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.theme-toggle:active { transform: scale(0.9); }
-
 /* ── SCROLL CONTENT ── */
 .page-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 80px;
-  scroll-behavior: smooth;
+flex: 1;
+overflow-y: auto;
+overflow-x: hidden;
+-webkit-overflow-scrolling: touch;
+padding-bottom: 80px;
+scroll-behavior: smooth;
 }
 .page-content::-webkit-scrollbar { display: none; }
-
 /* ── BOTTOM NAV ── */
 .bottom-nav {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  display: flex;
-  background: rgba(15,26,14,0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-  z-index: 100;
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-body.light .bottom-nav {
-  background: rgba(244,241,234,0.95);
+position: absolute;
+bottom: 0; left: 0; right: 0;
+display: flex;
+background: rgba(15,26,14,0.95);
+backdrop-filter: blur(20px);
+border-top: 1px solid var(--border);
+padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+z-index: 100;
+flex-shrink: 0;
 }
 .nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  cursor: pointer;
-  padding: 4px 0;
-  transition: all 0.2s;
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 3px;
+cursor: pointer;
+padding: 4px 0;
+transition: all 0.2s;
 }
 .nav-icon { font-size: 20px; transition: transform 0.2s; }
 .nav-label { font-size: 10px; color: var(--text3); letter-spacing: 0.5px; }
 .nav-item.active .nav-label { color: var(--green-bright); }
 .nav-item.active .nav-icon { transform: scale(1.15); }
 .nav-item:active { opacity: 0.7; }
-
 /* ── PAGES ── */
 .page { display: none; }
 .page.active { display: block; }
-
 /* ── DASHBOARD ── */
 .hero-card {
-  margin: 16px 16px 0;
-  background: linear-gradient(145deg, var(--green) 0%, #2d5e3c 60%, var(--red) 150%);
-  border-radius: 20px;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow);
+margin: 16px 16px 0;
+background: linear-gradient(145deg, var(--green) 0%, #2d5e3c 60%, var(--red) 150%);
+border-radius: 20px;
+padding: 20px;
+position: relative;
+overflow: hidden;
+box-shadow: var(--shadow);
 }
 .hero-card::before {
-  content: '';
-  position: absolute;
-  top: -30px; right: -30px;
-  width: 120px; height: 120px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 50%;
+content: '';
+position: absolute;
+top: -30px; right: -30px;
+width: 120px; height: 120px;
+background: rgba(255,255,255,0.04);
+border-radius: 50%;
 }
 .hero-card::after {
-  content: '';
-  position: absolute;
-  bottom: -20px; left: 40px;
-  width: 80px; height: 80px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 50%;
+content: '';
+position: absolute;
+bottom: -20px; left: 40px;
+width: 80px; height: 80px;
+background: rgba(255,255,255,0.03);
+border-radius: 50%;
 }
 .hero-gps {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 1px;
-  margin-bottom: 10px;
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 10px;
+color: rgba(255,255,255,0.7);
+letter-spacing: 1px;
+margin-bottom: 10px;
 }
 .gps-dot {
-  width: 6px; height: 6px;
-  background: #4eff91;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
+width: 6px; height: 6px;
+background: #4eff91;
+border-radius: 50%;
+animation: pulse 2s infinite;
 }
 @keyframes pulse {
-  0%,100% { opacity:1; transform:scale(1); }
-  50% { opacity:0.5; transform:scale(1.3); }
+0%,100% { opacity:1; transform:scale(1); }
+50% { opacity:0.5; transform:scale(1.3); }
 }
 .hero-location {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 4px;
+font-family: 'Noto Serif TC', serif;
+font-size: 18px;
+font-weight: 700;
+color: #fff;
+margin-bottom: 4px;
 }
 .hero-next {
-  font-size: 12px;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 16px;
+font-size: 12px;
+color: rgba(255,255,255,0.75);
+margin-bottom: 16px;
 }
 .hero-stats {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+display: flex;
+gap: 16px;
+margin-bottom: 16px;
 }
 .stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+display: flex;
+flex-direction: column;
+gap: 2px;
 }
 .stat-value {
-  font-family: 'DM Mono', monospace;
-  font-size: 20px;
-  font-weight: 500;
-  color: #fff;
+font-family: 'DM Mono', monospace;
+font-size: 20px;
+font-weight: 500;
+color: #fff;
 }
 .stat-label {
-  font-size: 10px;
-  color: rgba(255,255,255,0.6);
-  letter-spacing: 0.5px;
+font-size: 10px;
+color: rgba(255,255,255,0.6);
+letter-spacing: 0.5px;
 }
 .nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #fff;
-  color: var(--green);
-  font-weight: 700;
-  font-size: 14px;
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  width: 100%;
-  cursor: pointer;
-  letter-spacing: 1px;
-  transition: transform 0.15s, opacity 0.15s;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+background: #fff;
+color: var(--green);
+font-weight: 700;
+font-size: 14px;
+border: none;
+border-radius: 12px;
+padding: 12px;
+width: 100%;
+cursor: pointer;
+letter-spacing: 1px;
+transition: transform 0.15s, opacity 0.15s;
+box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 .nav-btn:active { transform: scale(0.97); opacity: 0.9; }
-
-/* ★修改3: 機票資訊卡片 */
-.flight-card {
-  margin: 12px 16px 0;
-  background: linear-gradient(135deg, #1a2a4a 0%, #0f1e38 100%);
-  border: 1px solid rgba(100,160,255,0.25);
-  border-radius: 16px;
-  padding: 14px 16px;
-  position: relative;
-  overflow: hidden;
-}
-body.light .flight-card {
-  background: linear-gradient(135deg, #dde8f8 0%, #c8d8f0 100%);
-  border-color: rgba(60,100,200,0.3);
-}
-.flight-card::before {
-  content: '✈';
-  position: absolute;
-  right: -8px; top: 50%;
-  transform: translateY(-50%);
-  font-size: 72px;
-  opacity: 0.05;
-  pointer-events: none;
-}
-.flight-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.flight-label {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: rgba(160,200,255,0.8);
-  text-transform: uppercase;
-}
-body.light .flight-label { color: #3a60b0; }
-.flight-badge {
-  background: rgba(100,160,255,0.15);
-  border: 1px solid rgba(100,160,255,0.3);
-  color: #90c0ff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 12px;
-  letter-spacing: 1px;
-}
-body.light .flight-badge {
-  background: rgba(60,100,200,0.15);
-  border-color: rgba(60,100,200,0.3);
-  color: #2850a0;
-}
-.flight-route {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.flight-city {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.flight-iata {
-  font-family: 'DM Mono', monospace;
-  font-size: 22px;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 2px;
-}
-body.light .flight-iata { color: #1a2e5a; }
-.flight-city-name {
-  font-size: 10px;
-  color: rgba(160,200,255,0.7);
-  margin-top: 1px;
-}
-body.light .flight-city-name { color: #5070a0; }
-.flight-time {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  margin-top: 2px;
-}
-body.light .flight-time { color: #1a2e5a; }
-.flight-line {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.flight-plane-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 4px;
-}
-.flight-dashes {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(100,160,255,0.4), rgba(100,160,255,0.1));
-  border-top: 1px dashed rgba(100,160,255,0.4);
-}
-body.light .flight-dashes {
-  border-color: rgba(60,100,200,0.35);
-}
-.flight-plane-icon { font-size: 14px; }
-.flight-duration {
-  font-size: 10px;
-  color: rgba(160,200,255,0.6);
-  letter-spacing: 1px;
-}
-body.light .flight-duration { color: #5070a0; }
-.flight-info-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.flight-chip {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(100,160,255,0.08);
-  border: 1px solid rgba(100,160,255,0.15);
-  border-radius: 8px;
-  padding: 3px 9px;
-  font-size: 11px;
-  color: rgba(160,200,255,0.85);
-  white-space: nowrap;
-}
-body.light .flight-chip {
-  background: rgba(60,100,200,0.08);
-  border-color: rgba(60,100,200,0.2);
-  color: #3a60b0;
-}
-
 /* ── SECTION HEADER ── */
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 16px 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 16px 10px;
 }
 .section-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 1px;
+font-family: 'Noto Serif TC', serif;
+font-size: 15px;
+font-weight: 700;
+color: var(--white);
+letter-spacing: 1px;
 }
 .section-more {
-  font-size: 11px;
-  color: var(--green-light);
-  cursor: pointer;
+font-size: 11px;
+color: var(--green-light);
+cursor: pointer;
 }
-
 /* ── DAY QUICK CARDS ── */
 .day-scroll {
-  display: flex;
-  gap: 12px;
-  padding: 0 16px 4px;
-  overflow-x: auto;
+display: flex;
+gap: 12px;
+padding: 0 16px 4px;
+overflow-x: auto;
 }
 .day-scroll::-webkit-scrollbar { display: none; }
 .day-quick-card {
-  flex-shrink: 0;
-  width: 120px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
+flex-shrink: 0;
+width: 120px;
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 14px;
+cursor: pointer;
+transition: all 0.2s;
 }
 .day-quick-card:active { transform: scale(0.96); }
 .day-quick-card.active-day {
-  border-color: var(--gold);
-  background: var(--card2);
+border-color: var(--gold);
+background: var(--card2);
 }
 .day-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 2px;
-  margin-bottom: 4px;
+font-family: 'DM Mono', monospace;
+font-size: 10px;
+color: var(--text3);
+letter-spacing: 2px;
+margin-bottom: 4px;
 }
 .day-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 6px;
-  line-height: 1.3;
+font-family: 'Noto Serif TC', serif;
+font-size: 13px;
+font-weight: 600;
+color: var(--white);
+margin-bottom: 6px;
+line-height: 1.3;
 }
 .day-count {
-  font-size: 10px;
-  color: var(--text3);
+font-size: 10px;
+color: var(--text3);
 }
 .day-dot {
-  width: 24px; height: 3px;
-  border-radius: 2px;
-  margin-top: 8px;
+width: 24px; height: 3px;
+border-radius: 2px;
+margin-top: 8px;
 }
-
 /* ── ALERTS / TIPS ── */
 .tip-card {
-  margin: 0 16px 16px;
-  background: rgba(212,168,67,0.08);
-  border: 1px solid rgba(212,168,67,0.25);
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
+margin: 0 16px 16px;
+background: rgba(212,168,67,0.08);
+border: 1px solid rgba(212,168,67,0.25);
+border-radius: 14px;
+padding: 12px 14px;
+display: flex;
+gap: 10px;
+align-items: flex-start;
 }
 .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .tip-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
 .tip-text strong { color: var(--gold-light); }
-
 /* ── TIMELINE ── */
 .timeline-wrap { padding: 0 16px; }
 .timeline-day-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 0 12px;
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 16px 0 12px;
 }
 .tl-day-badge {
-  background: linear-gradient(135deg, var(--green), var(--green-light));
-  color: #fff;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 5px 12px;
-  border-radius: 20px;
-  white-space: nowrap;
+background: linear-gradient(135deg, var(--green), var(--green-light));
+color: #fff;
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+font-weight: 500;
+padding: 5px 12px;
+border-radius: 20px;
+white-space: nowrap;
 }
 .tl-day-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--white);
+font-family: 'Noto Serif TC', serif;
+font-size: 16px;
+font-weight: 700;
+color: var(--white);
 }
 .timeline-item {
-  display: flex;
-  gap: 0;
-  position: relative;
-  margin-bottom: 0;
+display: flex;
+gap: 0;
+position: relative;
+margin-bottom: 0;
 }
+/* Left: time + line */
 .tl-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 52px;
-  flex-shrink: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 52px;
+flex-shrink: 0;
 }
 .tl-time {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 0.5px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
+font-family: 'DM Mono', monospace;
+font-size: 10px;
+color: var(--text3);
+letter-spacing: 0.5px;
+height: 22px;
+display: flex;
+align-items: center;
+white-space: nowrap;
 }
 .tl-dot-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+flex: 1;
 }
 .tl-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 2px solid var(--green);
-  background: var(--bg);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-  transition: all 0.2s;
+width: 10px; height: 10px;
+border-radius: 50%;
+border: 2px solid var(--green);
+background: var(--bg);
+flex-shrink: 0;
+position: relative;
+z-index: 2;
+transition: all 0.2s;
 }
 .tl-dot.food { border-color: var(--red-warm); }
 .tl-dot.hotel { border-color: var(--gold); background: var(--gold); }
+.tl-dot.flight { border-color: #90b4ff; background: #90b4ff; }
 .tl-dot.active-dot { background: var(--green); }
 .tl-line {
-  width: 1px;
-  flex: 1;
-  background: var(--border);
-  min-height: 16px;
+width: 1px;
+flex: 1;
+background: var(--border);
+min-height: 16px;
 }
+/* Right: card */
 .tl-right {
-  flex: 1;
-  padding: 0 0 16px 12px;
+flex: 1;
+padding: 0 0 16px 12px;
 }
 .tl-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 14px;
+padding: 12px 14px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
 }
 .tl-card:active { transform: scale(0.98); }
 .tl-card.food-card { border-color: rgba(224,92,68,0.3); }
 .tl-card.hotel-card { border-color: rgba(212,168,67,0.3); background: rgba(212,168,67,0.05); }
+.tl-card.flight-card { border-color: rgba(144,180,255,0.3); background: rgba(144,180,255,0.05); }
 .tl-card-type {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--text3);
-  text-transform: uppercase;
-  margin-bottom: 2px;
+font-size: 9px;
+letter-spacing: 2px;
+color: var(--text3);
+text-transform: uppercase;
+margin-bottom: 2px;
 }
 .tl-card-name {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 6px;
+font-family: 'Noto Serif TC', serif;
+font-size: 15px;
+font-weight: 600;
+color: var(--white);
+margin-bottom: 6px;
 }
 .tl-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 8px;
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-bottom: 8px;
 }
 .meta-chip {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  padding: 3px 8px;
-  font-size: 10px;
-  color: var(--text2);
-  white-space: nowrap;
-}
-body.light .meta-chip {
-  background: rgba(0,0,0,0.04);
-  border-color: rgba(0,0,0,0.1);
+display: flex;
+align-items: center;
+gap: 3px;
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 8px;
+padding: 3px 8px;
+font-size: 10px;
+color: var(--text2);
+white-space: nowrap;
 }
 .meta-chip.hours { border-color: rgba(74,124,89,0.3); color: var(--green-bright); }
 .meta-chip.budget { border-color: rgba(212,168,67,0.3); color: var(--gold-light); }
 .meta-chip.stay { border-color: rgba(255,255,255,0.1); }
 .meta-chip.phone { border-color: rgba(100,150,255,0.3); color: #90b4ff; cursor:pointer; }
-body.light .meta-chip.phone { color: #3060c0; }
 .meta-chip.addr { border-color: rgba(255,255,255,0.08); font-size:9px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space: nowrap; }
+.meta-chip.flight-info { border-color: rgba(144,180,255,0.3); color: #90b4ff; }
 .tl-travel {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(74,124,89,0.1);
-  border-radius: 8px;
-  padding: 5px 8px;
-  font-size: 11px;
-  color: var(--green-bright);
-  width: fit-content;
+display: flex;
+align-items: center;
+gap: 6px;
+background: rgba(74,124,89,0.1);
+border-radius: 8px;
+padding: 5px 8px;
+font-size: 11px;
+color: var(--green-bright);
+width: fit-content;
 }
 .tl-card-nav {
-  position: absolute;
-  top: 10px; right: 10px;
-  width: 28px; height: 28px;
-  background: var(--green);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.15s;
+position: absolute;
+top: 10px; right: 10px;
+width: 28px; height: 28px;
+background: var(--green);
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+cursor: pointer;
+transition: all 0.15s;
 }
 .tl-card-nav:active { transform: scale(0.9); background: var(--green-light); }
 .food-card .tl-card-nav { background: var(--red); }
 .hotel-card .tl-card-nav { background: var(--gold); }
-
+.flight-card .tl-card-nav { background: #5580cc; }
 /* ── DAY FILTER TABS ── */
 .day-tabs {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px 0;
-  overflow-x: auto;
+display: flex;
+gap: 8px;
+padding: 12px 16px 0;
+overflow-x: auto;
 }
 .day-tabs::-webkit-scrollbar { display: none; }
 .day-tab {
-  flex-shrink: 0;
-  padding: 7px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  background: var(--card);
+flex-shrink: 0;
+padding: 7px 16px;
+border-radius: 20px;
+border: 1px solid var(--border);
+font-size: 12px;
+color: var(--text2);
+cursor: pointer;
+transition: all 0.2s;
+white-space: nowrap;
 }
 .day-tab.active {
-  background: var(--green);
-  border-color: var(--green);
-  color: #fff;
-  font-weight: 500;
+background: var(--green);
+border-color: var(--green);
+color: #fff;
+font-weight: 500;
 }
 .day-tab:active { opacity: 0.7; }
-
 /* ── FOOD PAGE ── */
 .food-category-tabs {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px 0;
-  overflow-x: auto;
+display: flex;
+gap: 8px;
+padding: 12px 16px 0;
+overflow-x: auto;
 }
 .food-category-tabs::-webkit-scrollbar { display: none; }
 .cat-tab {
-  flex-shrink: 0;
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  background: var(--card);
+flex-shrink: 0;
+padding: 7px 14px;
+border-radius: 20px;
+border: 1px solid var(--border);
+font-size: 12px;
+color: var(--text2);
+cursor: pointer;
+transition: all 0.2s;
+white-space: nowrap;
 }
 .cat-tab.active {
-  background: var(--red);
-  border-color: var(--red);
-  color: #fff;
-  font-weight: 500;
+background: var(--red);
+border-color: var(--red);
+color: #fff;
+font-weight: 500;
 }
 .food-grid { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
 .food-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 14px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
 }
 .food-card:active { transform: scale(0.98); }
 .food-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 8px;
 }
 .food-name {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--white);
-  flex: 1;
+font-family: 'Noto Serif TC', serif;
+font-size: 15px;
+font-weight: 600;
+color: var(--white);
+flex: 1;
 }
 .food-cat-badge {
-  font-size: 9px;
-  letter-spacing: 1px;
-  padding: 3px 8px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  margin-left: 8px;
+font-size: 9px;
+letter-spacing: 1px;
+padding: 3px 8px;
+border-radius: 8px;
+flex-shrink: 0;
+margin-left: 8px;
 }
 .badge-snack { background: rgba(224,92,68,0.2); color: var(--red-warm); border: 1px solid rgba(224,92,68,0.3); }
 .badge-dessert { background: rgba(212,168,67,0.2); color: var(--gold-light); border: 1px solid rgba(212,168,67,0.3); }
@@ -777,176 +565,174 @@ body.light .meta-chip.phone { color: #3060c0; }
 .food-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .food-addr { font-size: 11px; color: var(--text3); display: flex; align-items: flex-start; gap: 4px; }
 .food-card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
+display: flex;
+gap: 8px;
+margin-top: 10px;
 }
 .action-btn {
-  flex: 1;
-  padding: 8px 0;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text2);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  background: rgba(255,255,255,0.03);
+flex: 1;
+padding: 8px 0;
+border-radius: 10px;
+border: 1px solid var(--border);
+font-size: 11px;
+color: var(--text2);
+text-align: center;
+cursor: pointer;
+transition: all 0.15s;
+background: rgba(255,255,255,0.03);
 }
 .action-btn:active { opacity: 0.7; }
 .action-btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 500; }
 .action-btn.red { background: var(--red); border-color: var(--red); color: #fff; }
-
 /* ── INFO PAGE ── */
 .info-section { padding: 12px 16px; }
 .info-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 16px;
+margin-bottom: 12px;
 }
 .info-card-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+font-family: 'Noto Serif TC', serif;
+font-size: 14px;
+font-weight: 600;
+color: var(--white);
+margin-bottom: 10px;
+display: flex;
+align-items: center;
+gap: 8px;
 }
 .info-row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-size: 12px;
-  color: var(--text2);
+display: flex;
+gap: 8px;
+align-items: flex-start;
+padding: 6px 0;
+border-bottom: 1px solid rgba(255,255,255,0.04);
+font-size: 12px;
+color: var(--text2);
 }
-body.light .info-row { border-bottom-color: rgba(0,0,0,0.06); }
 .info-row:last-child { border-bottom: none; padding-bottom: 0; }
 .info-row-label { color: var(--text3); white-space: nowrap; width: 60px; flex-shrink: 0; }
 .info-row-val { color: var(--text2); flex: 1; }
 .info-row-val a { color: var(--green-bright); text-decoration: none; }
 .code-block {
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--green-bright);
-  white-space: pre-wrap;
-  line-height: 1.7;
-  overflow-x: auto;
-  margin-top: 8px;
+background: rgba(0,0,0,0.4);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 14px;
+font-family: 'DM Mono', monospace;
+font-size: 10px;
+color: var(--green-bright);
+white-space: pre-wrap;
+line-height: 1.7;
+overflow-x: auto;
+margin-top: 8px;
 }
-
 /* ── MODAL ── */
 .modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(8px);
-  z-index: 200;
-  display: flex;
-  align-items: flex-end;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s;
+position: absolute;
+inset: 0;
+background: rgba(0,0,0,0.7);
+backdrop-filter: blur(8px);
+z-index: 200;
+display: flex;
+align-items: flex-end;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.25s;
 }
 .modal-overlay.open {
-  opacity: 1;
-  pointer-events: all;
+opacity: 1;
+pointer-events: all;
 }
 .modal-sheet {
-  width: 100%;
-  background: var(--bg2);
-  border-radius: 24px 24px 0 0;
-  border-top: 1px solid var(--border);
-  padding: 16px 20px max(24px, env(safe-area-inset-bottom));
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  max-height: 80vh;
-  overflow-y: auto;
+width: 100%;
+background: var(--bg2);
+border-radius: 24px 24px 0 0;
+border-top: 1px solid var(--border);
+padding: 16px 20px max(24px, env(safe-area-inset-bottom));
+transform: translateY(100%);
+transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+max-height: 80vh;
+overflow-y: auto;
 }
 .modal-overlay.open .modal-sheet { transform: translateY(0); }
 .modal-handle {
-  width: 36px; height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto 16px;
+width: 36px; height: 4px;
+background: var(--border);
+border-radius: 2px;
+margin: 0 auto 16px;
 }
 .modal-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
+font-family: 'Noto Serif TC', serif;
+font-size: 18px;
+font-weight: 700;
+color: var(--white);
+margin-bottom: 4px;
 }
 .modal-subtitle { font-size: 11px; color: var(--text3); letter-spacing: 1px; margin-bottom: 16px; }
 .modal-close {
-  position: absolute;
-  top: 16px; right: 20px;
-  width: 28px; height: 28px;
-  background: var(--card2);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; cursor: pointer; color: var(--text2);
+position: absolute;
+top: 16px; right: 20px;
+width: 28px; height: 28px;
+background: var(--card2);
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 14px; cursor: pointer; color: var(--text2);
 }
-
 /* ── TOAST ── */
 .toast {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-10px);
-  background: var(--green);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  z-index: 300;
-  opacity: 0;
-  transition: all 0.3s;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+position: absolute;
+top: 60px;
+left: 50%;
+transform: translateX(-50%) translateY(-10px);
+background: var(--green);
+color: #fff;
+padding: 10px 20px;
+border-radius: 20px;
+font-size: 12px;
+font-weight: 500;
+z-index: 300;
+opacity: 0;
+transition: all 0.3s;
+white-space: nowrap;
+pointer-events: none;
+box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
 /* ── HOME HOTEL CARD ── */
 .hotel-card-home {
-  margin: 12px 16px 0;
-  background: var(--card);
-  border: 1px solid rgba(212,168,67,0.3);
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
+margin: 12px 16px 0;
+background: var(--card);
+border: 1px solid rgba(212,168,67,0.3);
+border-radius: 16px;
+padding: 14px;
+display: flex;
+align-items: center;
+gap: 12px;
+cursor: pointer;
 }
 .hotel-icon { font-size: 28px; }
 .hotel-info { flex: 1; }
 .hotel-name { font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: 600; color: var(--white); }
 .hotel-addr-small { font-size: 10px; color: var(--text3); margin-top: 2px; }
 .hotel-nav-btn {
-  background: var(--gold);
-  color: var(--bg);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  white-space: nowrap;
+background: var(--gold);
+color: var(--bg);
+font-size: 11px;
+font-weight: 700;
+padding: 8px 12px;
+border-radius: 10px;
+cursor: pointer;
+white-space: nowrap;
 }
-
 /* Divider */
 .divider { height: 1px; background: var(--border); margin: 4px 16px; }
+
+/* Scrollable day tabs */
+.tl-day-section { display: none; }
+.tl-day-section.active { display: block; }
 
 /* food section */
 .food-section { display: none; }
@@ -954,316 +740,355 @@ body.light .info-row { border-bottom-color: rgba(0,0,0,0.06); }
 
 /* ── WELCOME ANIMATION ── */
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to { opacity:1; transform:translateY(0); }
+from { opacity:0; transform:translateY(20px); }
+to { opacity:1; transform:translateY(0); }
 }
 .hero-card { animation: fadeUp 0.5s ease both; }
-.flight-card { animation: fadeUp 0.5s 0.08s ease both; }
-.hotel-card-home { animation: fadeUp 0.5s 0.15s ease both; }
-.day-scroll { animation: fadeUp 0.5s 0.25s ease both; opacity:0; animation-fill-mode: both; }
+.hotel-card-home { animation: fadeUp 0.5s 0.1s ease both; }
+.day-scroll { animation: fadeUp 0.5s 0.2s ease both; opacity:0; animation-fill-mode: both; }
 
 /* ── Misc ── */
 .empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text3);
-  font-size: 13px;
+text-align: center;
+padding: 40px 20px;
+color: var(–text3);
+font-size: 13px;
 }
 .info-badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .info-badge {
-  font-size: 10px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: var(--tag-bg);
-  border: 1px solid var(--border);
-  color: var(--text2);
+font-size: 10px;
+padding: 4px 10px;
+border-radius: 8px;
+background: var(–tag-bg);
+border: 1px solid var(–border);
+color: var(–text2);
+}
+
+/* ── FLIGHT CARD (home) ── */
+.flight-card-home {
+margin: 12px 16px 0;
+background: var(–card);
+border: 1px solid rgba(144,180,255,0.3);
+border-radius: 16px;
+padding: 14px;
+}
+.flight-card-home-title {
+font-size: 10px;
+color: #90b4ff;
+letter-spacing: 2px;
+margin-bottom: 8px;
+}
+.flight-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 6px 0;
+border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.flight-row:last-child { border-bottom: none; }
+.flight-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+color: var(–white);
+font-weight: 500;
+}
+.flight-route {
+font-size: 12px;
+color: var(–text2);
+}
+.flight-time {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+color: var(–gold-light);
 }
 </style>
+
 </head>
 <body>
 <div id="app">
+ <!-- Status Bar -->
+ <div class="status-bar">
+ <span id="currentTime">09:41</span>
+ <span>🌐 GPS 已定位</span>
+ <span>⚡ 87%</span>
+ </div>
 
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span id="currentTime">09:41</span>
-    <span>🌐 GPS 已定位</span>
-    <span>⚡ 87%</span>
-  </div>
+ <!-- Header -->
 
-  <!-- Header -->
-  <div class="app-header">
-    <div class="header-top">
-      <div>
-        <div class="app-title">⚓ 金門旅遊</div>
-        <div class="app-subtitle">KINMEN · 4 DAYS 3 NIGHTS</div>
-      </div>
-      <div class="header-right">
-        <!-- ★修改4: 深淺切換按鈕 -->
-        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="切換主題">🌙</button>
-        <!-- ★修改2: 2025→2026 -->
-        <div class="header-badge">2026</div>
-      </div>
-    </div>
-  </div>
+ <div class="app-header">
+ <div class="header-top">
+ <div>
+ <div class="app-title">⚓ 金門旅遊</div>
+ <div class="app-subtitle">KINMEN · 4 DAYS 3 NIGHTS</div>
+ </div>
+ <div class="header-badge">2026</div>
+ </div>
+ </div>
 
-  <!-- Content -->
-  <div class="page-content">
+ <!-- Content -->
 
-    <!-- ══ PAGE: HOME ══ -->
-    <div class="page active" id="page-home">
+ <div class="page-content">
 
-      <!-- Hero GPS Card -->
-      <div class="hero-card">
-        <div class="hero-gps">
-          <div class="gps-dot"></div>
-          GPS 即時定位中
-        </div>
-        <div class="hero-location" id="currentSpot">📍 莒光樓 附近</div>
-        <div class="hero-next" id="nextSpotInfo">⏱ 下一站：陳景蘭洋樓 · 機車約 8 分鐘</div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-value" id="distKm">2.1</div>
-            <div class="stat-label">公里</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="travelMin">8</div>
-            <div class="stat-label">分鐘 (機車)</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">D1</div>
-            <div class="stat-label">今日行程</div>
-          </div>
-        </div>
-        <button class="nav-btn" id="heroNavBtn" onclick="vibrate();navigateToNext()">
-          🗺 一鍵導航至下一站
-        </button>
-      </div>
+<!-- ══ PAGE: HOME ══ -->
 
-      <!-- ★修改3: 機票資訊卡片 -->
-      <div class="flight-card">
-        <div class="flight-header">
-          <div class="flight-label">✈ 去程航班</div>
-          <div class="flight-badge">5/3 出發</div>
-        </div>
-        <div class="flight-route">
-          <div class="flight-city">
-            <div class="flight-iata">TSA</div>
-            <div class="flight-city-name">台北松山</div>
-            <div class="flight-time">10:35</div>
-          </div>
-          <div class="flight-line">
-            <div class="flight-plane-row">
-              <div class="flight-dashes"></div>
-              <div class="flight-plane-icon">✈</div>
-              <div class="flight-dashes"></div>
-            </div>
-            <div class="flight-duration">約 55 分鐘</div>
-          </div>
-          <div class="flight-city">
-            <div class="flight-iata">KNH</div>
-            <div class="flight-city-name">金門尚義</div>
-            <div class="flight-time">11:30</div>
-          </div>
-        </div>
-        <div class="flight-info-row">
-          <div class="flight-chip">🚌 機場接送 → 民宿</div>
-          <div class="flight-chip">🏠 預計抵達 15:00</div>
-          <div class="flight-chip">📋 Check-in 後出發</div>
-        </div>
-      </div>
+<div class="page active" id="page-home">
 
-      <!-- Hotel Quick Nav -->
-      <div class="hotel-card-home" onclick="vibrate();openMapsLatLon(HOTEL.lat,HOTEL.lon)">
-        <div class="hotel-icon">🏠</div>
-        <div class="hotel-info">
-          <div class="hotel-name">八八小屋民宿二館</div>
-          <div class="hotel-addr-small">金城鎮光前路88號 · 今晚住宿</div>
-        </div>
-        <div class="hotel-nav-btn">↩ 導航回家</div>
-      </div>
+ <!-- Hero GPS Card -->
 
-      <!-- Day Quick Access -->
-      <div class="section-header">
-        <div class="section-title">📅 四日行程總覽</div>
-      </div>
-      <div class="day-scroll">
-        <div class="day-quick-card active-day" onclick="vibrate();switchPage('schedule'); switchDay(0)">
-          <div class="day-num">DAY 01</div>
-          <div class="day-title">抵達·金城初探</div>
-          <div class="day-count">3 景點 · 3 美食</div>
-          <div class="day-dot" style="background:var(--green)"></div>
-        </div>
-        <div class="day-quick-card" onclick="vibrate();switchPage('schedule'); switchDay(1)">
-          <div class="day-num">DAY 02</div>
-          <div class="day-title">東西海岸漫遊</div>
-          <div class="day-count">3 景點 · 3 美食</div>
-          <div class="day-dot" style="background:var(--gold)"></div>
-        </div>
-        <div class="day-quick-card" onclick="vibrate();switchPage('schedule'); switchDay(2)">
-          <div class="day-num">DAY 03</div>
-          <div class="day-title">戰地砲陣地</div>
-          <div class="day-count">3 景點 · 3 美食</div>
-          <div class="day-dot" style="background:var(--red)"></div>
-        </div>
-        <div class="day-quick-card" onclick="vibrate();switchPage('schedule'); switchDay(3)">
-          <div class="day-num">DAY 04</div>
-          <div class="day-title">老街漫步歸途</div>
-          <div class="day-count">3 景點 · 2 美食</div>
-          <div class="day-dot" style="background:#6a9fcf"></div>
-        </div>
-      </div>
+ <div class="hero-card">
+ <div class="hero-gps">
+ <div class="gps-dot"></div>
+ GPS 即時定位中
+ </div>
+ <div class="hero-location" id="currentSpot">📍 莒光樓 附近</div>
+ <div class="hero-next" id="nextSpotInfo">🕐 下一站：陳景蘭洋樓 · 機車約 8 分鐘</div>
+ <div class="hero-stats">
+ <div class="stat-item">
+ <div class="stat-value" id="distKm">2.1</div>
+ <div class="stat-label">公里</div>
+ </div>
+ <div class="stat-item">
+ <div class="stat-value" id="travelMin">8</div>
+ <div class="stat-label">分鐘 (機車)</div>
+ </div>
+ <div class="stat-item">
+ <div class="stat-value">D1</div>
+ <div class="stat-label">今日行程</div>
+ </div>
+ </div>
+ <button class="nav-btn" onclick="openMaps('莒光樓,金門')">
+ 🗺️ 一鍵導航至下一站
+ </button>
+ </div>
 
-      <!-- Tips -->
-      <div class="section-header" style="padding-top:16px">
-        <div class="section-title">💡 旅遊提示</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-icon">☀️</div>
-        <div class="tip-text"><strong>烈日防曬：</strong>金門夏季紫外線強，建議攜帶防曬乳、帽子。螢幕亮度調至 80% 以上以利戶外閱讀。</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-icon">🛵</div>
-        <div class="tip-text"><strong>機車租借：</strong>建議在機場或碼頭附近租借，日租約 NT$350-500。行駛時注意路況，部分砲陣地道路較窄。</div>
-      </div>
-      <div class="tip-card">
-        <div class="tip-icon">💵</div>
-        <div class="tip-text"><strong>現金為主：</strong>部分老街小攤、傳統餐飲店僅收現金，建議出發前備足 <strong>NT$3,000-5,000</strong>。</div>
-      </div>
+ <!-- Flight Info Card -->
 
-    </div><!-- /home -->
+ <div class="flight-card-home">
+ <div class="flight-card-home-title">✈️ 航班資訊 · DXHG5S</div>
+ <div class="flight-row">
+ <span class="flight-num">AE-763</span>
+ <span class="flight-route">台中 RMQ → 金門 KNH</span>
+ <span class="flight-time">05/03 10:10</span>
+ </div>
+ <div class="flight-row">
+ <span class="flight-num">AE-766</span>
+ <span class="flight-route">金門 KNH → 台中 RMQ</span>
+ <span class="flight-time">05/06 13:15</span>
+ </div>
+ </div>
 
-    <!-- ══ PAGE: SCHEDULE ══ -->
-    <div class="page" id="page-schedule">
-      <div class="day-tabs">
-        <div class="day-tab active" onclick="vibrate();switchDay(0)">第一天</div>
-        <div class="day-tab" onclick="vibrate();switchDay(1)">第二天</div>
-        <div class="day-tab" onclick="vibrate();switchDay(2)">第三天</div>
-        <div class="day-tab" onclick="vibrate();switchDay(3)">第四天</div>
-      </div>
-      <div class="timeline-wrap" id="timeline-container">
-        <!-- Filled by JS -->
-      </div>
-    </div><!-- /schedule -->
+ <!-- Hotel Quick Nav -->
 
-    <!-- ══ PAGE: FOOD ══ -->
-    <div class="page" id="page-food">
-      <div class="food-category-tabs">
-        <div class="cat-tab active" onclick="switchFoodCat('all')">全部</div>
-        <div class="cat-tab" onclick="switchFoodCat('snack')">在地小吃</div>
-        <div class="cat-tab" onclick="switchFoodCat('dessert')">甜點飲品</div>
-        <div class="cat-tab" onclick="switchFoodCat('trad')">傳統老店</div>
-        <div class="cat-tab" onclick="switchFoodCat('innov')">創新口味</div>
-        <div class="cat-tab" onclick="switchFoodCat('gift')">必買伴手禮</div>
-        <div class="cat-tab" onclick="switchFoodCat('bar')">金門酒吧</div>
-      </div>
-      <div class="food-grid" id="food-grid">
-        <!-- Filled by JS -->
-      </div>
-    </div><!-- /food -->
+ <div class="hotel-card-home" onclick="openMaps('八八小屋民宿二館,金門縣金城鎮')">
+ <div class="hotel-icon">🏠</div>
+ <div class="hotel-info">
+ <div class="hotel-name">八八小屋民宿二館</div>
+ <div class="hotel-addr-small">金城鎮 · 今晚住宿</div>
+ </div>
+ <div class="hotel-nav-btn">🔙 導航回家</div>
+ </div>
 
-    <!-- ══ PAGE: INFO ══ -->
-    <div class="page" id="page-info">
-      <div class="info-section">
+ <!-- Day Quick Access -->
 
-        <div class="info-card">
-          <div class="info-card-title">🏠 住宿資訊</div>
-          <div class="info-row"><div class="info-row-label">民宿</div><div class="info-row-val">八八小屋民宿二館</div></div>
-          <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">金門縣金城鎮光前路 88 號</div></div>
-          <div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:082-328888">082-328888</a></div></div>
-          <div class="info-row"><div class="info-row-label">Check-in</div><div class="info-row-val">15:00 以後</div></div>
-          <div class="info-row"><div class="info-row-label">Check-out</div><div class="info-row-val">11:00 以前</div></div>
-          <button class="nav-btn" style="margin-top:12px;background:var(--gold);color:#1a1a0a" onclick="vibrate();openMapsLatLon(HOTEL.lat,HOTEL.lon)">
-            導航回八八小屋
-          </button>
-        </div>
+ <div class="section-header">
+ <div class="section-title">📅 四日行程總覽</div>
+ </div>
+ <div class="day-scroll">
+ <div class="day-quick-card active-day" onclick="switchPage('schedule'); switchDay(0)">
+ <div class="day-num">DAY 01</div>
+ <div class="day-title">金城古蹟探索</div>
+ <div class="day-count">4 景點 · 3 美食</div>
+ <div class="day-dot" style="background:var(--green)"></div>
+ </div>
+ <div class="day-quick-card" onclick="switchPage('schedule'); switchDay(1)">
+ <div class="day-num">DAY 02</div>
+ <div class="day-title">東西海岸漫遊</div>
+ <div class="day-count">3 景點 · 3 美食</div>
+ <div class="day-dot" style="background:var(--gold)"></div>
+ </div>
+ <div class="day-quick-card" onclick="switchPage('schedule'); switchDay(2)">
+ <div class="day-num">DAY 03</div>
+ <div class="day-title">戰地砲陣地</div>
+ <div class="day-count">3 景點 · 3 美食</div>
+ <div class="day-dot" style="background:var(--red)"></div>
+ </div>
+ <div class="day-quick-card" onclick="switchPage('schedule'); switchDay(3)">
+ <div class="day-num">DAY 04</div>
+ <div class="day-title">老街漫步歸途</div>
+ <div class="day-count">3 景點 · 2 美食</div>
+ <div class="day-dot" style="background:#6a9fcf"></div>
+ </div>
+ </div>
 
-        <div class="info-card">
-          <div class="info-card-title">✈ 航班資訊</div>
-          <div class="info-row"><div class="info-row-label">去程日期</div><div class="info-row-val">2026 / 05 / 03（六）</div></div>
-          <div class="info-row"><div class="info-row-label">去程航班</div><div class="info-row-val">TSA 10:35 → KNH 11:30</div></div>
-          <div class="info-row"><div class="info-row-label">回程日期</div><div class="info-row-val">2026 / 05 / 06（二）</div></div>
-          <div class="info-row"><div class="info-row-label">接送安排</div><div class="info-row-val">機場接送至民宿，預計 15:00 抵達</div></div>
-        </div>
+ <!-- Tips -->
 
-        <div class="info-card">
-          <div class="info-card-title">⚙ GPS 定位邏輯說明</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px;">
-            App 利用 <strong style="color:var(--green-bright)">Haversine 公式</strong> 計算當前座標與所有行程節點之距離，找出最近景點並顯示至下一站資訊。
-          </div>
-          <div class="code-block">// GPS 距離計算核心邏輯
+ <div class="section-header" style="padding-top:16px">
+ <div class="section-title">💡 旅遊提示</div>
+ </div>
+ <div class="tip-card">
+ <div class="tip-icon">☀️</div>
+ <div class="tip-text"><strong>烈日防曬：</strong>金門夏季紫外線強，建議攜帶防曬乳、帽子。螢幕亮度調至 80% 以上以利戶外閱讀。</div>
+ </div>
+ <div class="tip-card">
+ <div class="tip-icon">🛵</div>
+ <div class="tip-text"><strong>機車租借：</strong>建議在機場或碼頭附近租借，日租約 NT$350-500。行駛時注意路況，部分砲陣地道路較窄。</div>
+ </div>
+ <div class="tip-card">
+ <div class="tip-icon">💴</div>
+ <div class="tip-text"><strong>現金為主：</strong>部分老街小攤、傳統餐飲店僅收現金，建議出發前備足 <strong>NT$3,000-5,000</strong>。</div>
+ </div>
+</div><!-- /home -->
+
+<!-- ══ PAGE: SCHEDULE ══ -->
+
+<div class="page" id="page-schedule">
+ <div class="day-tabs">
+ <div class="day-tab active" onclick="switchDay(0)">第一天</div>
+ <div class="day-tab" onclick="switchDay(1)">第二天</div>
+ <div class="day-tab" onclick="switchDay(2)">第三天</div>
+ <div class="day-tab" onclick="switchDay(3)">第四天</div>
+ </div>
+ <div class="timeline-wrap" id="timeline-container">
+ <!-- Filled by JS -->
+ </div>
+</div><!-- /schedule -->
+
+<!-- ══ PAGE: FOOD ══ -->
+
+<div class="page" id="page-food">
+ <div class="food-category-tabs">
+ <div class="cat-tab active" onclick="switchFoodCat('all')">全部</div>
+ <div class="cat-tab" onclick="switchFoodCat('snack')">在地小吃</div>
+ <div class="cat-tab" onclick="switchFoodCat('dessert')">甜點飲品</div>
+ <div class="cat-tab" onclick="switchFoodCat('trad')">傳統老店</div>
+ <div class="cat-tab" onclick="switchFoodCat('innov')">創新口味</div>
+ <div class="cat-tab" onclick="switchFoodCat('gift')">必買伴手禮</div>
+ <div class="cat-tab" onclick="switchFoodCat('bar')">金門酒吧</div>
+ </div>
+ <div class="food-grid" id="food-grid">
+ <!-- Filled by JS -->
+ </div>
+</div><!-- /food -->
+
+<!-- ══ PAGE: INFO ══ -->
+
+<div class="page" id="page-info">
+ <div class="info-section">
+
+ <div class="info-card">
+ <div class="info-card-title">✈️ 航班資訊</div>
+ <div class="info-row"><div class="info-row-label">訂位代號</div><div class="info-row-val" style="color:var(--gold-light);font-weight:600">DXHG5S</div></div>
+ <div class="info-row"><div class="info-row-label">去程</div><div class="info-row-val">AE-763｜台中→金門｜05/03 10:10起飛 抵達11:15</div></div>
+ <div class="info-row"><div class="info-row-label">回程</div><div class="info-row-val">AE-766｜金門→台中｜05/06 13:15起飛 抵達14:15</div></div>
+ <div class="info-row"><div class="info-row-label">艙等</div><div class="info-row-val">經濟艙｜確認</div></div>
+ </div>
+
+ <div class="info-card">
+ <div class="info-card-title">🏠 住宿資訊</div>
+ <div class="info-row"><div class="info-row-label">民宿</div><div class="info-row-val">八八小屋民宿二館</div></div>
+ <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">金門縣金城鎮光前路 88 號</div></div>
+ <div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:082-328888">082-328888</a></div></div>
+ <div class="info-row"><div class="info-row-label">Check-in</div><div class="info-row-val">15:00 以後</div></div>
+ <div class="info-row"><div class="info-row-label">Check-out</div><div class="info-row-val">11:00 以前</div></div>
+ <button class="nav-btn" style="margin-top:12px;background:var(--gold);color:#1a1a0a" onclick="openMaps('金門縣金城鎮光前路88號')">
+ 🔙 導航回八八小屋
+ </button>
+ </div>
+
+ <div class="info-card">
+ <div class="info-card-title">🛰️ GPS 定位邏輯說明</div>
+ <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px;">
+ App 利用 <strong style="color:var(--green-bright)">Haversine 公式</strong> 計算當前座標與所有行程節點之距離，找出最近景點並顯示至下一站資訊。
+ </div>
+ <div class="code-block">// GPS 距離計算核心邏輯
 function haversine(lat1,lon1,lat2,lon2){
-  const R = 6371; // 地球半徑 km
-  const dLat = toRad(lat2-lat1);
-  const dLon = toRad(lon2-lon1);
-  const a = Math.sin(dLat/2)**2 +
-    Math.cos(toRad(lat1)) *
-    Math.cos(toRad(lat2)) *
-    Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(
-    Math.sqrt(a), Math.sqrt(1-a)
-  );
+const R = 6371; // 地球半徑 km
+const dLat = toRad(lat2-lat1);
+const dLon = toRad(lon2-lon1);
+const a = Math.sin(dLat/2)**2 +
+Math.cos(toRad(lat1)) *
+Math.cos(toRad(lat2)) *
+Math.sin(dLon/2)**2;
+return R * 2 * Math.atan2(
+Math.sqrt(a), Math.sqrt(1-a)
+);
 }
+
+// 找最近景點
+function findNearest(userLat,userLon){
+return spots.reduce((nearest,spot)=>{
+const d = haversine(
+userLat,userLon,
+spot.lat,spot.lon
+);
+return d < nearest.dist
+? {spot,dist:d} : nearest;
+},{dist:Infinity});
+}
+
 // 機車時速換算 (均速 30km/h)
 const motoTime = (km) =>
-  Math.round(km/30*60); // 分鐘</div>
-        </div>
+Math.round(km/30*60); // 分鐘</div>
 
-        <div class="info-card">
-          <div class="info-card-title">🏍 機車旅遊操作優化</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.8;">
-            ✅ <strong style="color:var(--cream)">單手操作</strong>：所有關鍵按鈕位於螢幕下半區，拇指可達<br>
-            ✅ <strong style="color:var(--cream)">大字標題</strong>：景點名稱 15-18px，戶外強光下清晰可讀<br>
-            ✅ <strong style="color:var(--cream)">一鍵導航</strong>：每個景點卡片右上角直連 Google Maps<br>
-            ✅ <strong style="color:var(--cream)">離線快取</strong>：行程數據本地儲存，無網路仍可查閱<br>
-            ✅ <strong style="color:var(--cream)">最少點擊</strong>：從首頁到導航最多 2 次點擊
-          </div>
-        </div>
+ </div>
 
-        <div class="info-card">
-          <div class="info-card-title">🚑 緊急資訊</div>
-          <div class="info-row"><div class="info-row-label">報警</div><div class="info-row-val"><a href="tel:110">110</a></div></div>
-          <div class="info-row"><div class="info-row-label">救護</div><div class="info-row-val"><a href="tel:119">119</a></div></div>
-          <div class="info-row"><div class="info-row-label">金門醫院</div><div class="info-row-val"><a href="tel:082-332546">082-332546</a></div></div>
-          <div class="info-row"><div class="info-row-label">旅遊諮詢</div><div class="info-row-val"><a href="tel:0800-211734">0800-211734</a></div></div>
-        </div>
+ <div class="info-card">
+ <div class="info-card-title">🏍️ 機車旅遊操作優化</div>
+ <div style="font-size:12px;color:var(--text2);line-height:1.8;">
+ ✅ <strong style="color:var(--cream)">單手操作</strong>：所有關鍵按鈕位於螢幕下半區，拇指可達<br>
+ ✅ <strong style="color:var(--cream)">大字標題</strong>：景點名稱 15-18px，戶外強光下清晰可讀<br>
+ ✅ <strong style="color:var(--cream)">一鍵導航</strong>：每個景點卡片右上角直連 Google Maps<br>
+ ✅ <strong style="color:var(--cream)">離線快取</strong>：行程數據本地儲存，無網路仍可查閱<br>
+ ✅ <strong style="color:var(--cream)">最少點擊</strong>：從首頁到導航最多 2 次點擊
+ </div>
+ </div>
 
-      </div>
-    </div><!-- /info -->
+ <div class="info-card">
+ <div class="info-card-title">🚨 緊急資訊</div>
+ <div class="info-row"><div class="info-row-label">報警</div><div class="info-row-val"><a href="tel:110">110</a></div></div>
+ <div class="info-row"><div class="info-row-label">救護</div><div class="info-row-val"><a href="tel:119">119</a></div></div>
+ <div class="info-row"><div class="info-row-label">金門醫院</div><div class="info-row-val"><a href="tel:082-332546">082-332546</a></div></div>
+ <div class="info-row"><div class="info-row-label">旅遊諮詢</div><div class="info-row-val"><a href="tel:0800-211734">0800-211734</a></div></div>
+ </div>
+ </div>
+</div><!-- /info -->
 
-  </div><!-- /page-content -->
+ </div><!-- /page-content -->
 
-  <!-- Bottom Nav -->
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="switchPage('home')" id="nav-home">
-      <div class="nav-icon">🏠</div>
-      <div class="nav-label">首頁</div>
-    </div>
-    <div class="nav-item" onclick="switchPage('schedule')" id="nav-schedule">
-      <div class="nav-icon">📅</div>
-      <div class="nav-label">行程</div>
-    </div>
-    <div class="nav-item" onclick="switchPage('food')" id="nav-food">
-      <div class="nav-icon">🍜</div>
-      <div class="nav-label">美食</div>
-    </div>
-    <div class="nav-item" onclick="switchPage('info')" id="nav-info">
-      <div class="nav-icon">ℹ️</div>
-      <div class="nav-label">資訊</div>
-    </div>
-  </div>
+ <!-- Bottom Nav -->
 
-  <!-- Modal -->
-  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
-    <div class="modal-sheet" id="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-close" onclick="closeModal(null,true)">✕</div>
-      <div id="modal-content"></div>
-    </div>
-  </div>
+ <div class="bottom-nav">
+ <div class="nav-item active" onclick="switchPage('home')" id="nav-home">
+ <div class="nav-icon">🏠</div>
+ <div class="nav-label">首頁</div>
+ </div>
+ <div class="nav-item" onclick="switchPage('schedule')" id="nav-schedule">
+ <div class="nav-icon">📅</div>
+ <div class="nav-label">行程</div>
+ </div>
+ <div class="nav-item" onclick="switchPage('food')" id="nav-food">
+ <div class="nav-icon">🍜</div>
+ <div class="nav-label">美食</div>
+ </div>
+ <div class="nav-item" onclick="switchPage('info')" id="nav-info">
+ <div class="nav-icon">ℹ️</div>
+ <div class="nav-label">資訊</div>
+ </div>
+ </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+ <!-- Modal -->
 
+ <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+ <div class="modal-sheet" id="modal-sheet">
+ <div class="modal-handle"></div>
+ <div class="modal-close" onclick="closeModal(null,true)">✕</div>
+ <div id="modal-content"></div>
+ </div>
+ </div>
+
+ <!-- Toast -->
+
+ <div class="toast" id="toast"></div>
 </div>
 
 <script>
@@ -1271,126 +1096,132 @@ const motoTime = (km) =>
 // DATA
 // ══════════════════════════════════════════
 const HOTEL = {
-  name: '八八小屋民宿二館',
-  address: '金門縣金城鎮光前路 88 號',
-  phone: '082-328888',
-  lat: 24.4322, lon: 118.3172
+ name: '八八小屋民宿二館',
+ address: '金門縣金城鎮光前路 88 號',
+ phone: '082-328888',
+ lat: 24.4322, lon: 118.3172
 };
 
 const SPOTS = [
-  { id:'s1',  name:'莒光樓',       stay:50,  hours:'全天開放',      ticket:'免費',    lat:24.4318, lon:118.3189, addr:'金門縣金城鎮莒光路1號',    phone:'082-328580' },
-  { id:'s2',  name:'陳景蘭洋樓',   stay:60,  hours:'09:00-17:00',   ticket:'免費',    lat:24.4522, lon:118.3831, addr:'金門縣金湖鎮成功村',       phone:'082-332648' },
-  { id:'s3',  name:'山后民俗文化村',stay:60,  hours:'08:00-17:30',   ticket:'NT$30',   lat:24.4681, lon:118.4121, addr:'金門縣金湖鎮山后村',       phone:'082-332394' },
-  { id:'s4',  name:'得月樓',       stay:60,  hours:'08:30-17:00',   ticket:'免費',    lat:24.4558, lon:118.3921, addr:'金門縣金湖鎮水頭村',       phone:'082-332228' },
-  { id:'s5',  name:'清金門鎮總兵署',stay:40,  hours:'09:00-22:00',   ticket:'免費',    lat:24.4315, lon:118.3178, addr:'金門縣金城鎮民族路1號',    phone:'082-325548' },
-  { id:'s6',  name:'陽翟老街',     stay:60,  hours:'全天開放',      ticket:'免費',    lat:24.4298, lon:118.3142, addr:'金門縣金城鎮陽翟路',       phone:'' },
-  { id:'s7',  name:'沙美摩洛哥',   stay:40,  hours:'全天開放',      ticket:'免費',    lat:24.4589, lon:118.3728, addr:'金門縣金湖鎮沙美村',       phone:'' },
-  { id:'s8',  name:'模範街',       stay:90,  hours:'全天開放',      ticket:'免費',    lat:24.4321, lon:118.3165, addr:'金門縣金城鎮模範街',       phone:'' },
-  { id:'s9',  name:'獅山砲陣地',   stay:40,  hours:'09:00-17:30',   ticket:'免費',    lat:24.4642, lon:118.3958, addr:'金門縣金湖鎮小徑村',       phone:'082-333979' },
-  { id:'s10', name:'翟山坑道',     stay:60,  hours:'08:30-17:00',   ticket:'免費',    lat:24.4103, lon:118.3281, addr:'金門縣金城鎮古城村',       phone:'082-328271' },
-  { id:'s11', name:'明遺老街',     stay:40,  hours:'全天開放',      ticket:'免費',    lat:24.4612, lon:118.3887, addr:'金門縣金湖鎮陳坑村',       phone:'' },
+ { id:'s1', name:'莒光樓', stay:50, hours:'08:00-22:00', ticket:'免費', lat:24.4318, lon:118.3189, addr:'金門縣金城鎮賢城路1號', phone:'082-325632' },
+ { id:'s2', name:'陳景蘭洋樓', stay:60, hours:'08:30-17:30', ticket:'免費', lat:24.4522, lon:118.3831, addr:'金門縣金湖鎮正義里成功村1號', phone:'082-332648' },
+ { id:'s3', name:'山后民俗文化村', stay:60, hours:'08:30-17:00', ticket:'免費', lat:24.4681, lon:118.4121, addr:'金門縣金沙鎮山后村（山后中堡十八間）', phone:'082-352150' },
+ { id:'s4', name:'得月樓 (水頭聚落)', stay:60, hours:'08:30-17:00', ticket:'免費', lat:24.4558, lon:118.3921, addr:'金門縣金城鎮前水頭村（水頭聚落）', phone:'082-332228' },
+ { id:'s5', name:'清金門鎮總兵署', stay:40, hours:'09:00-22:00', ticket:'免費', lat:24.4315, lon:118.3178, addr:'金門縣金城鎮浯江街53號', phone:'082-371717' },
+ { id:'s6', name:'陽翟老街', stay:60, hours:'全天開放', ticket:'免費', lat:24.4298, lon:118.3142, addr:'金門縣金沙鎮陽翟路（沙美商圈）', phone:'' },
+ { id:'s7', name:'沙美摩洛哥', stay:40, hours:'全天開放', ticket:'免費', lat:24.4589, lon:118.3728, addr:'金門縣金沙鎮沙美里（沙美老街旁）', phone:'' },
+ { id:'s8', name:'模範街', stay:90, hours:'全天開放', ticket:'免費', lat:24.4321, lon:118.3165, addr:'金門縣金城鎮模範街（後浦老街商圈）', phone:'' },
+ { id:'s9', name:'獅山砲陣地', stay:40, hours:'09:00-17:30', ticket:'免費', lat:24.4642, lon:118.3958, addr:'金門縣金沙鎮陽沙路（山后民俗文化村旁）', phone:'082-355697' },
+ { id:'s10', name:'翟山坑道', stay:60, hours:'08:30-17:00', ticket:'免費', lat:24.4103, lon:118.3281, addr:'金門縣金城鎮90號（古崗村古崗湖東南方）', phone:'082-328271' },
+ { id:'s11', name:'明遺老街 (金門城)', stay:40, hours:'全天開放', ticket:'免費', lat:24.4612, lon:118.3887, addr:'金門縣金城鎮金門城里（明遺古街台澎金馬第一街）', phone:'' },
 ];
 
 const FOODS = [
-  { id:'f1',  name:'閩式燒餅',          cat:'snack',   price:'NT$18/個',    hours:'07:00-18:00', addr:'金門縣金城鎮民族路',      phone:'',           desc:'金門最具代表性傳統早點，皮酥內軟，現烤現賣。' },
-  { id:'f2',  name:'雨川食堂',          cat:'snack',   price:'NT$60-150',   hours:'11:00-20:00', addr:'金門縣金城鎮中興路',      phone:'082-321456', desc:'在地人推薦，招牌蚵仔麵線、貢丸湯，分量扎實。' },
-  { id:'f3',  name:'蚵嗲之家',          cat:'snack',   price:'NT$40-100',   hours:'10:00-19:00', addr:'金門縣金城鎮民生路',      phone:'082-325789', desc:'金門特色蚵嗲，外皮酥脆，蚵仔鮮甜，必吃小吃。' },
-  { id:'f4',  name:'淳新蛋捲',          cat:'dessert', price:'NT$150+',     hours:'09:00-18:00', addr:'金門縣金城鎮中正路',      phone:'082-324567', desc:'金門知名伴手禮，手工蛋捲，香脆不油膩。' },
-  { id:'f5',  name:'宋記東山鴨頭',      cat:'snack',   price:'NT$100-300',  hours:'15:00-22:00', addr:'金門縣金城鎮民族路',      phone:'082-326543', desc:'滷味名店，鴨頭、鴨脖、豆干一應俱全，傍晚最旺。' },
-  { id:'f6',  name:'華興商行香蛋',      cat:'snack',   price:'NT$15/個',    hours:'09:00-20:00', addr:'金門縣金城鎮模範街',      phone:'082-323456', desc:'古法製作的香蛋，加入茴香、八角滷製，獨特風味。' },
-  { id:'f7',  name:'永寬鹹粿店',        cat:'snack',   price:'NT$50',       hours:'07:00-12:00', addr:'金門縣金城鎮中興路',      phone:'082-321234', desc:'早市限定，金門傳統鹹粿，賣完即止，建議早到。' },
-  { id:'f8',  name:'巴布咖啡水餃',      cat:'snack',   price:'NT$100-200',  hours:'11:00-21:00', addr:'金門縣金城鎮光前路',      phone:'082-327890', desc:'結合咖啡與特色水餃，異業融合，味道獨特有趣。' },
-  { id:'f9',  name:'金許園',            cat:'snack',   price:'NT$50-120',   hours:'11:00-20:00', addr:'金門縣金城鎮北門路',      phone:'082-322345', desc:'金門在地老字號，麵食、小菜齊全，價格親民。' },
-  { id:'f10', name:'金門舊識咖啡',      cat:'dessert', price:'NT$150-300',  hours:'10:00-21:00', addr:'金門縣金城鎮珠浦路',      phone:'082-328901', desc:'文青風咖啡館，金門高粱咖啡為特色，甜點精緻。' },
-  { id:'f11', name:'易廚火鍋',          cat:'snack',   price:'NT$350-600',  hours:'17:00-23:00', addr:'金門縣金城鎮環島南路',    phone:'082-329012', desc:'金門食材火鍋，使用在地蔬菜與海鮮，晚餐首選。' },
-  { id:'f12', name:'永春/聯成廣東粥',   cat:'snack',   price:'NT$80-100',   hours:'06:00-11:00', addr:'金門縣金城鎮民生路',      phone:'082-324789', desc:'早餐廣東粥，米粒綿密，配料豐富，暖胃首選。' },
-  { id:'f13', name:'一條根 (伴手禮)',   cat:'gift',    price:'NT$200-800',  hours:'09:00-20:00', addr:'金門縣金城鎮民族路',      phone:'082-325123', desc:'金門代表性藥草，舒緩筋骨，伴手禮首選。' },
-  { id:'f14', name:'存德中藥房',        cat:'gift',    price:'依品項',      hours:'09:00-18:00', addr:'金門縣金城鎮模範街',      phone:'082-323678', desc:'百年中藥房，一條根相關產品齊全，品質有保障。' },
-  { id:'f15', name:'阿公ㄟ豆花',        cat:'trad',    price:'NT$30-60',    hours:'10:00-20:00', addr:'金門縣金城鎮光前路',      phone:'082-321567', desc:'配料豐富，豆花紮實有豆香，老金城人的記憶。' },
-  { id:'f16', name:'長合餅舖',          cat:'trad',    price:'NT$100-300',  hours:'09:00-18:00', addr:'金門縣金湖鎮沙美老街',    phone:'082-334567', desc:'沙美老街百年老店，手工寸棗糖、軋車餅，傳承三代。' },
-  { id:'f17', name:'談天樓酒釀湯圓',    cat:'innov',   price:'NT$60-120',   hours:'11:00-21:00', addr:'金門縣金湖鎮山外里',      phone:'082-333890', desc:'冰火交融，酒釀熱湯圓配剉冰，獨創吃法，夏日必試。' },
-  { id:'f18', name:'嘉年華冰菓室(小金門)',cat:'innov', price:'NT$80-150',   hours:'10:00-20:00', addr:'烈嶼鄉上林村',            phone:'082-362345', desc:'裝潢極具復古感，必吃「桶餅芋泥冰」，小金門必訪。' },
-  { id:'f19', name:'和記蛋捲',          cat:'dessert', price:'NT$150+',     hours:'09:00-18:00', addr:'金門縣金城鎮中山路',      phone:'082-326789', desc:'古法柴燒蛋捲，在地人首選，與淳新並列金門蛋捲雙雄。' },
+ { id:'f1', name:'閩式燒餅專賣店', cat:'snack', price:'NT$18/個', hours:'06:00-18:00', addr:'金門縣金沙鎮博愛街48號（沙美老街）', phone:'082-352922', desc:'沙美老街三十年老店，現烤燒餅皮酥內軟，鹹甜口味皆有，配廣東粥一絕。' },
+ { id:'f2', name:'雨川食堂', cat:'snack', price:'NT$40-95', hours:'11:30-19:30', addr:'金門縣金城鎮莒光路53號（近總兵署）', phone:'082-320165', desc:'金城老街人氣文青風小吃店，招牌高粱肉燥飯、一條根雞湯，融合金門在地風味，常見排隊人潮。' },
+ { id:'f3', name:'蚵嗲之家', cat:'snack', price:'NT$40-60', hours:'14:30-19:00（週四休）', addr:'金門縣金城鎮莒光路一段59號（邱良功母節孝坊旁）', phone:'082-322210', desc:'祖傳三代金門名店，每日限時4.5小時出攤，二鍋炸蚵嗲外脆內嫩，芝麻球也是一絕，必排隊品嚐。' },
+ { id:'f4', name:'淳新商號蛋捲', cat:'dessert', price:'NT$150+', hours:'10:00-22:00', addr:'金門縣金城鎮模範街6號', phone:'082-311389', desc:'模範街人氣名店，現場手工製作高粱酒冰淇淋蛋捲，路過就能聞到撲鼻蛋香，是金門蛋捲雙雄之一。' },
+ { id:'f5', name:'宋記東山鴨頭', cat:'snack', price:'NT$100-300', hours:'15:00-22:00', addr:'金門縣金城鎮民族路36號', phone:'0982-053650', desc:'滷味名店，鴨頭、鴨脖、豆干一應俱全，傍晚開賣最旺，是金門夜晚必試的宵夜選項。' },
+ { id:'f6', name:'華興商行香蛋', cat:'snack', price:'NT$15/個', hours:'09:00-20:00', addr:'金門縣金城鎮模範街（近模範街入口）', phone:'082-323456', desc:'古法製作的香蛋，加入茴香、八角滷製，獨特閩南風味，逛模範街必買的銅板美食。' },
+ { id:'f7', name:'永寬鹹粿炸', cat:'snack', price:'NT$30-50', hours:'05:30-10:30、14:30-17:30', addr:'金門縣金城鎮莒光路一段44號（貞節牌坊旁）', phone:'082-372841', desc:'無招牌的金門古早味，用在來米與芋頭製成鹹粿油炸，早市限定賣完即止，強烈建議7點前到。' },
+ { id:'f8', name:'巴布咖啡水餃', cat:'snack', price:'NT$100-200', hours:'11:00-21:00', addr:'金門縣金城鎮光前路88號附近（八八小屋民宿周邊）', phone:'082-327890', desc:'結合咖啡與特色水餃的創意小店，異業融合，適合早午餐時段，距民宿步行可達。' },
+ { id:'f9', name:'金許園', cat:'snack', price:'NT$50-120', hours:'06:00-14:00', addr:'金門縣金湖鎮山外里復興路（山外市場附近）', phone:'082-333064', desc:'金湖鎮在地老字號，北方麵點、蔥油餅、餡餅大餅樣樣有，價格親民，鄰近山外市場。' },
+ { id:'f10', name:'金門舊識咖啡', cat:'dessert', price:'NT$150-300', hours:'10:00-21:00', addr:'金門縣金城鎮珠浦南路（珠山聚落周邊）', phone:'082-328901', desc:'文青風咖啡館，主打金門高粱咖啡等在地特色飲品，甜點精緻，環境舒適宜人。' },
+ { id:'f11', name:'易廚火鍋', cat:'snack', price:'NT$350-600', hours:'17:00-23:00', addr:'金門縣金城鎮環島南路一段（金城近郊）', phone:'082-329012', desc:'金門食材火鍋，使用在地蔬菜與新鮮海鮮，晚餐聚餐首選，建議提前訂位。' },
+ { id:'f12', name:'永春廣東粥', cat:'snack', price:'NT$80-100', hours:'06:00-13:30', addr:'金門縣金城鎮莒光路162之2號（金城老街內）', phone:'082-327292', desc:'傳承三代90年老店，金門三大廣東粥之一，粥糜煮到看不見米粒，料多味美配油條是標準吃法。' },
+ { id:'f13', name:'王大夫一條根 (伴手禮)', cat:'gift', price:'NT$200-800', hours:'09:00-20:00', addr:'金門縣金城鎮莒光路（後浦老街，存德中藥房附近）', phone:'082-325123', desc:'金門代表性藥草，舒緩筋骨酸痛，有膏藥、噴劑、藥膳包等多種形式，是最熱賣的金門伴手禮之一。' },
+ { id:'f14', name:'存德中藥房', cat:'gift', price:'NT$50-500', hours:'09:00-21:00', addr:'金門縣金城鎮莒光路38號（後浦老街）', phone:'082-325588', desc:'1832年創立近200年老店，第五代傳人經營，招牌純正胡椒粉、十三香、五香粉聞名全台，夜間關門秀是必看體驗。' },
+ { id:'f15', name:'阿公ㄟ豆花', cat:'trad', price:'NT$30-60', hours:'10:00-20:00（週一公休）', addr:'金門縣金城鎮模範街15號', phone:'082-325870', desc:'模範街人氣甜品店，豆花滑嫩有豆香，配料豐富可自選，門口還有章魚燒攤位，是老金城人的美食記憶。' },
+ { id:'f16', name:'長合餅舖', cat:'trad', price:'NT$100-300', hours:'07:00-18:00', addr:'金門縣金沙鎮汶沙里三民路24號（沙美老街）', phone:'082-352053', desc:'1917年創立四代傳承，金門最具代表性的傳統糕餅老店，手工寸棗糖、軋車餅、麻粩不含防腐劑，是必買金門味。' },
+ { id:'f17', name:'談天樓酒釀湯圓', cat:'innov', price:'NT$60-120', hours:'11:00-21:00', addr:'金門縣金湖鎮復興路3號（山外市場旁）', phone:'082-332766', desc:'60年老店，冰火交融的酒釀湯圓是金門獨創吃法，芝麻內餡搭配高粱酒釀清香，夏日必試涼品。' },
+ { id:'f18', name:'嘉年華冰菓室 (小金門)', cat:'innov', price:'NT$80-150', hours:'10:00-20:00', addr:'烈嶼鄉上林村', phone:'082-362345', desc:'裝潢極具復古感，必吃「桶餅芋泥冰」，小金門必訪。' },
+ { id:'f19', name:'和記蛋捲', cat:'dessert', price:'NT$150+', hours:'09:00-18:00', addr:'金門縣金城鎮模範街（模範街商圈內）', phone:'082-326789', desc:'古法柴燒蛋捲，在地人首選，與淳新並列金門蛋捲雙雄，香脆不油膩，送禮自用皆宜。' },
 ];
 
 const BARS = [
-  { id:'b1', name:'砲彈酒吧 Bomb Bar',   cat:'bar', price:'NT$150-400', hours:'19:00-02:00', addr:'金門縣金城鎮民族路45號',   phone:'082-325999', desc:'以金門砲彈為主題裝飾，提供金門高粱調酒，氣氛獨特，是旅客必訪酒吧。' },
-  { id:'b2', name:'碉堡 Bar & Bistro',    cat:'bar', price:'NT$200-500', hours:'18:00-01:00', addr:'金門縣金城鎮珠浦北路12號', phone:'082-321888', desc:'軍事風格裝潢，提供調酒與輕食，高粱威士忌系列是招牌，周末有駐唱。' },
-  { id:'b3', name:'老酒館 Lao Jiu Bar',   cat:'bar', price:'NT$100-350', hours:'20:00-02:00', addr:'金門縣金城鎮陽翟路88號',   phone:'082-323777', desc:'閩南老宅改建，金門老酒與精釀啤酒為主，氛圍懷舊，適合深夜暢談。' },
-  { id:'b4', name:'金門小酌 Cheers KM',   cat:'bar', price:'NT$150-450', hours:'17:00-00:00', addr:'金門縣金湖鎮中正路15號',   phone:'082-332666', desc:'金湖鎮唯一專業調酒吧，主打高粱基底創意調酒，下午五點即可入座。' },
+ { id:'b1', name:'砲彈酒吧 Bomb Bar', cat:'bar', price:'NT$150-400', hours:'19:00-02:00', addr:'金門縣金城鎮民族路45號', phone:'082-325999', desc:'以金門砲彈為主題裝飾，提供金門高粱調酒，氣氛獨特，是旅客必訪酒吧。' },
+ { id:'b2', name:'碉堡 Bar & Bistro', cat:'bar', price:'NT$200-500', hours:'18:00-01:00', addr:'金門縣金城鎮珠浦北路12號', phone:'082-321888', desc:'軍事風格裝潢，提供調酒與輕食，高粱威士忌系列是招牌，周末有駐唱。' },
+ { id:'b3', name:'老酒館 Lao Jiu Bar', cat:'bar', price:'NT$100-350', hours:'20:00-02:00', addr:'金門縣金城鎮陽翟路88號', phone:'082-323777', desc:'閩南老宅改建，金門老酒與精釀啤酒為主，氛圍懷舊，適合深夜暢談。' },
+ { id:'b4', name:'金門小酌 Cheers KM', cat:'bar', price:'NT$150-450', hours:'17:00-00:00', addr:'金門縣金湖鎮中正路15號', phone:'082-332666', desc:'金湖鎮唯一專業調酒吧，主打高粱基底創意調酒，下午五點即可入座。' },
 ];
 
-// ★修改5: DAY 1 行程重排
-// 邏輯：15:00抵達民宿→Check-in→15:30出發
-// 金城景點順路安排：模範街(近民宿)→清金門鎮總兵署(步行可達)→陽翟老街(夕陽)
-// 晚餐→宵夜，全程集中金城市區，不用長途騎車
+// ── 4-Day Schedule ──
+// ★ DAY 1 (5/3): 航班 AE-763 台中→金門 10:10起飛 11:15落地，機場接送抵達民宿約12:00
+// ★ DAY 4 (5/6): 航班 AE-766 金門→台中 13:15起飛，需約12:00前到機場
 const SCHEDULE = [
-  {
-    day: 1, title: '抵達·金城初探',
-    color: '#4a7c59',
-    nodes: [
-      { time:'11:30', type:'spot',  id:'s_airport', travelNext:'機場接送 約 30 分鐘', note:'✈ 抵達金門尚義機場' },
-      { time:'15:00', type:'hotel', note:'✅ Check-in · 安頓行李' },
-      { time:'15:30', type:'spot',  id:'s8',  travelNext:'3 分鐘', note:'步行可達，金城精華' },
-      { time:'17:00', type:'spot',  id:'s5',  travelNext:'2 分鐘', note:'可至 22:00，不怕趕時間' },
-      { time:'18:00', type:'food',  id:'f3',  note:'下午點心' },
-      { time:'18:30', type:'spot',  id:'s6',  travelNext:'', note:'夕陽時分逛老街最美' },
-      { time:'20:00', type:'food',  id:'f2',  note:'晚餐' },
-      { time:'21:30', type:'food',  id:'f5',  note:'宵夜滷味散步吃' },
-    ]
-  },
-  {
-    day: 2, title: '東西海岸漫遊',
-    color: '#d4a843',
-    nodes: [
-      { time:'07:30', type:'food',  id:'f7',  note:'早餐（限量！早到）' },
-      { time:'08:30', type:'spot',  id:'s10', travelNext:'15 分鐘', note:'' },
-      { time:'10:00', type:'spot',  id:'s4',  travelNext:'8 分鐘',  note:'' },
-      { time:'11:30', type:'spot',  id:'s2',  travelNext:'10 分鐘', note:'' },
-      { time:'13:00', type:'food',  id:'f9',  note:'午餐' },
-      { time:'14:30', type:'spot',  id:'s7',  travelNext:'12 分鐘', note:'' },
-      { time:'16:00', type:'food',  id:'f10', note:'下午咖啡' },
-      { time:'18:00', type:'food',  id:'f5',  note:'晚餐滷味' },
-      { time:'20:00', type:'hotel', note:'返回住宿' },
-    ]
-  },
-  {
-    day: 3, title: '戰地砲陣地',
-    color: '#c0392b',
-    nodes: [
-      { time:'07:30', type:'food',  id:'f1',  note:'早餐燒餅' },
-      { time:'08:30', type:'spot',  id:'s3',  travelNext:'12 分鐘', note:'' },
-      { time:'10:00', type:'spot',  id:'s11', travelNext:'8 分鐘',  note:'' },
-      { time:'11:30', type:'spot',  id:'s9',  travelNext:'10 分鐘', note:'注意表演時間！' },
-      { time:'13:00', type:'food',  id:'f17', note:'午餐（特色體驗）' },
-      { time:'15:00', type:'food',  id:'f15', note:'下午豆花' },
-      { time:'16:30', type:'food',  id:'f16', note:'長合餅舖採購' },
-      { time:'19:00', type:'food',  id:'f11', note:'晚餐火鍋' },
-      { time:'21:00', type:'hotel', note:'返回住宿' },
-    ]
-  },
-  {
-    day: 4, title: '老街伴手禮歸途',
-    color: '#6a9fcf',
-    nodes: [
-      { time:'08:00', type:'food',  id:'f8',  note:'早餐' },
-      { time:'09:30', type:'spot',  id:'s6',  travelNext:'3 分鐘', note:'最後逛街' },
-      { time:'10:30', type:'food',  id:'f13', note:'採購伴手禮' },
-      { time:'11:00', type:'food',  id:'f14', note:'存德中藥房' },
-      { time:'12:00', type:'food',  id:'f4',  note:'帶走蛋捲' },
-      { time:'12:30', type:'food',  id:'f19', note:'和記蛋捲比較' },
-      { time:'13:30', type:'hotel', note:'Check-out · 前往機場/碼頭' },
-    ]
-  }
+ {
+ day: 1, title: '金城古蹟探索',
+ color: '#4a7c59',
+ flightNote: '✈️ AE-763 台中→金門 10:10 起飛 · 11:15 落地',
+ nodes: [
+ // 去程航班提示
+ { time:'10:10', type:'flight', flightNo:'AE-763', route:'台中 RMQ → 金門 KNH', arrive:'11:15', note:'落地後機場接送' },
+ // 12:00 抵達民宿，放行李休息
+ { time:'12:00', type:'hotel', note:'抵達民宿 · 放行李稍作休息', isArrival: true },
+ // 午餐（民宿附近）
+ { time:'12:30', type:'food', id:'f2', note:'午餐' },
+ // 下午走金城市區景點（全部在民宿附近，步行或短程騎車）
+ { time:'14:00', type:'spot', id:'s1', travelNext:'3 分鐘', note:'' },
+ { time:'15:00', type:'spot', id:'s5', travelNext:'3 分鐘', note:'' },
+ { time:'16:00', type:'spot', id:'s8', travelNext:'5 分鐘', note:'' },
+ // 傍晚逛陽翟老街
+ { time:'17:30', type:'spot', id:'s6', travelNext:'2 分鐘', note:'' },
+ // 下午茶點心
+ { time:'18:30', type:'food', id:'f3', note:'晚餐點心' },
+ // 模範街散步買香蛋
+ { time:'19:30', type:'food', id:'f6', note:'模範街散步吃' },
+ { time:'21:00', type:'hotel', note:'返回住宿' },
+ ]
+ },
+ {
+ day: 2, title: '東西海岸漫遊',
+ color: '#d4a843',
+ nodes: [
+ { time:'07:30', type:'food', id:'f7', note:'早餐（限量！早到）' },
+ { time:'08:30', type:'spot', id:'s10', travelNext:'15 分鐘', note:'' },
+ { time:'10:00', type:'spot', id:'s4', travelNext:'8 分鐘', note:'' },
+ { time:'11:30', type:'spot', id:'s2', travelNext:'10 分鐘', note:'' },
+ { time:'13:00', type:'food', id:'f9', note:'午餐' },
+ { time:'14:30', type:'spot', id:'s7', travelNext:'12 分鐘', note:'' },
+ { time:'16:00', type:'food', id:'f10', note:'下午咖啡' },
+ { time:'18:00', type:'food', id:'f5', note:'晚餐滷味' },
+ { time:'20:00', type:'hotel', note:'返回住宿' },
+ ]
+ },
+ {
+ day: 3, title: '戰地砲陣地',
+ color: '#c0392b',
+ nodes: [
+ { time:'07:30', type:'food', id:'f1', note:'早餐燒餅' },
+ { time:'08:30', type:'spot', id:'s3', travelNext:'12 分鐘', note:'' },
+ { time:'10:00', type:'spot', id:'s11', travelNext:'8 分鐘', note:'' },
+ { time:'11:30', type:'spot', id:'s9', travelNext:'10 分鐘', note:'注意表演時間！' },
+ { time:'13:00', type:'food', id:'f17', note:'午餐（特色體驗）' },
+ { time:'15:00', type:'food', id:'f15', note:'下午豆花' },
+ { time:'16:30', type:'food', id:'f16', note:'長合餅舖採購' },
+ { time:'19:00', type:'food', id:'f11', note:'晚餐火鍋' },
+ { time:'21:00', type:'hotel', note:'返回住宿' },
+ ]
+ },
+ {
+ // ★ 5/6 回程：AE-766 13:15 起飛，需約 12:00 到機場（距市區約 15 分鐘）
+ // Check-out 11:00，行程提前收尾
+ day: 4, title: '老街伴手禮歸途',
+ color: '#6a9fcf',
+ flightNote: '✈️ AE-766 金門→台中 13:15 起飛 · 需 12:00 前到機場',
+ nodes: [
+ { time:'08:00', type:'food', id:'f8', note:'早餐' },
+ { time:'09:00', type:'spot', id:'s6', travelNext:'3 分鐘', note:'最後逛街' },
+ { time:'09:45', type:'food', id:'f13', note:'採購伴手禮' },
+ { time:'10:15', type:'food', id:'f14', note:'存德中藥房' },
+ { time:'10:40', type:'food', id:'f4', note:'帶走淳新蛋捲' },
+ { time:'11:00', type:'food', id:'f19', note:'和記蛋捲比較' },
+ { time:'11:30', type:'hotel', note:'Check-out · 整理行李出發機場' },
+ // 回程航班提示
+ { time:'12:00', type:'flight', flightNo:'AE-766', route:'金門 KNH → 台中 RMQ', arrive:'14:15', note:'請提早抵達機場辦理手續' },
+ ]
+ }
 ];
-
-// 機場虛擬景點
-const AIRPORT_SPOT = {
-  id: 's_airport', name: '金門尚義機場', stay: 30,
-  hours: '依航班', ticket: '—',
-  lat: 24.4278, lon: 118.3592,
-  addr: '金門縣金城鎮尚義村', phone: '082-328820'
-};
 
 // ══════════════════════════════════════════
 // STATE
@@ -1398,397 +1229,358 @@ const AIRPORT_SPOT = {
 let currentPage = 'home';
 let currentDay = 0;
 let currentFoodCat = 'all';
-let isDark = true;
-
-// ══════════════════════════════════════════
-// THEME TOGGLE (★修改4)
-// ══════════════════════════════════════════
-function toggleTheme() {
-  vibrate();
-  isDark = !isDark;
-  document.body.classList.toggle('light', !isDark);
-  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
-}
 
 // ══════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════
-function getSpot(id) {
-  if(id === 's_airport') return AIRPORT_SPOT;
-  return SPOTS.find(s=>s.id===id);
-}
-function getFood(id) { return FOODS.find(f=>f.id===id) || BARS.find(b=>b.id===id); }
+function getSpot(id){ return SPOTS.find(s=>s.id===id); }
+function getFood(id){ return FOODS.find(f=>f.id===id) || BARS.find(b=>b.id===id); }
 
 function openMaps(q) {
-  vibrate();
-  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-  window.open(url, '_blank');
-  showToast('正在開啟 Google Maps…');
+ const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+ window.open(url, '_blank');
+ showToast('正在開啟 Google Maps…');
 }
+
 function callPhone(phone) {
-  vibrate();
-  if(!phone){ showToast('此店家暫無電話資訊'); return; }
-  window.location.href = `tel:${phone}`;
+ if(!phone){ showToast('此店家暫無電話資訊'); return; }
+ window.location.href = `tel:${phone}`;
 }
+
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
+ const t = document.getElementById('toast');
+ t.textContent = msg;
+ t.classList.add('show');
+ setTimeout(()=>t.classList.remove('show'), 2200);
 }
 
 // ══════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════
 function switchPage(page) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.getElementById('nav-'+page).classList.add('active');
-  currentPage = page;
-  if(page==='schedule') renderTimeline();
-  if(page==='food') renderFood();
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+ document.getElementById('page-'+page).classList.add('active');
+ document.getElementById('nav-'+page).classList.add('active');
+ currentPage = page;
+ if(page==='schedule') renderTimeline();
+ if(page==='food') renderFood();
 }
 
 // ══════════════════════════════════════════
 // SCHEDULE / TIMELINE
 // ══════════════════════════════════════════
 function switchDay(d) {
-  currentDay = d;
-  // ★5. 記憶最後選取的天數
-  try { localStorage.setItem('kinmen_lastDay', d); } catch(e){}
-  document.querySelectorAll('.day-tab').forEach((t,i)=>t.classList.toggle('active', i===d));
-  document.querySelectorAll('.day-quick-card').forEach((c,i)=>c.classList.toggle('active-day', i===d));
-  renderTimeline();
+ currentDay = d;
+ document.querySelectorAll('.day-tab').forEach((t,i)=>{
+ t.classList.toggle('active', i===d);
+ });
+ document.querySelectorAll('.day-quick-card').forEach((c,i)=>{
+ c.classList.toggle('active-day', i===d);
+ });
+ renderTimeline();
 }
 
 function renderTimeline() {
-  const container = document.getElementById('timeline-container');
-  const day = SCHEDULE[currentDay];
-  let html = `
-    <div class="timeline-day-header">
-      <div class="tl-day-badge">DAY 0${day.day}</div>
-      <div class="tl-day-title">${day.title}</div>
-    </div>`;
+ const container = document.getElementById('timeline-container');
+ const day = SCHEDULE[currentDay];
+ let html = `
+ <div class="timeline-day-header">
+ <div class="tl-day-badge">DAY 0${day.day}</div>
+ <div class="tl-day-title">${day.title}</div>
+ </div>`;
 
-  day.nodes.forEach((node, idx) => {
-    const isLast = idx === day.nodes.length - 1;
+ // Flight note banner
+ if(day.flightNote) {
+ html += `<div style="margin:0 0 12px;background:rgba(144,180,255,0.1);border:1px solid rgba(144,180,255,0.25);border-radius:12px;padding:10px 14px;font-size:11px;color:#90b4ff;letter-spacing:0.5px;">${day.flightNote}</div>`;
+ }
 
-    if(node.type === 'hotel') {
-      html += `
-      <div class="timeline-item">
-        <div class="tl-left">
-          <div class="tl-time">${node.time}</div>
-          <div class="tl-dot-wrap">
-            <div class="tl-dot hotel"></div>
-            ${!isLast?'<div class="tl-line"></div>':''}
-          </div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-card hotel-card">
-            <div class="tl-card-nav" onclick="openMaps('${HOTEL.address}')">🏠</div>
-            <div class="tl-card-type">住宿</div>
-            <div class="tl-card-name">${HOTEL.name}</div>
-            <div class="tl-meta">
-              <div class="meta-chip addr">📍 ${HOTEL.address}</div>
-            </div>
-            <div class="tl-meta">
-              <div class="meta-chip phone" onclick="callPhone('${HOTEL.phone}')">📞 ${HOTEL.phone}</div>
-            </div>
-            <div style="font-size:11px;color:var(--text3)">${node.note}</div>
-          </div>
-        </div>
-      </div>`;
-      return;
-    }
+ day.nodes.forEach((node, idx) => {
+ const isLast = idx === day.nodes.length - 1;
 
-    if(node.type === 'food') {
-      const f = getFood(node.id);
-      if(!f) return;
-      html += `
-      <div class="timeline-item">
-        <div class="tl-left">
-          <div class="tl-time">${node.time}</div>
-          <div class="tl-dot-wrap">
-            <div class="tl-dot food"></div>
-            ${!isLast?'<div class="tl-line"></div>':''}
-          </div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-card food-card" onclick="showFoodModal('${f.id}')">
-            <div class="tl-card-nav" onclick="event.stopPropagation();openMaps('${f.addr||f.name+',金門'}')">🗺</div>
-            <div class="tl-card-type">🍜 ${node.note || '美食'}</div>
-            <div class="tl-card-name">${f.name}</div>
-            <div class="tl-meta">
-              <div class="meta-chip hours">⏰ ${f.hours}</div>
-              <div class="meta-chip budget">💰 ${f.price}</div>
-            </div>
-            <div class="tl-meta">
-              <div class="meta-chip addr">📍 ${f.addr}</div>
-            </div>
-            ${f.phone?`<div class="tl-meta"><div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 ${f.phone}</div></div>`:''}
-          </div>
-        </div>
-      </div>`;
-      return;
-    }
+ // ── FLIGHT NODE ──
+ if(node.type === 'flight') {
+ html += `
+ <div class="timeline-item">
+ <div class="tl-left">
+ <div class="tl-time">${node.time}</div>
+ <div class="tl-dot-wrap">
+ <div class="tl-dot flight"></div>
+ ${!isLast?'<div class="tl-line"></div>':''}
+ </div>
+ </div>
+ <div class="tl-right">
+ <div class="tl-card flight-card">
+ <div class="tl-card-type">✈️ 航班</div>
+ <div class="tl-card-name">${node.flightNo}</div>
+ <div class="tl-meta">
+ <div class="meta-chip flight-info">🛫 ${node.route}</div>
+ </div>
+ <div class="tl-meta">
+ <div class="meta-chip flight-info">🛬 抵達 ${node.arrive}</div>
+ </div>
+ <div style="font-size:11px;color:var(--text3);margin-top:4px">${node.note}</div>
+ </div>
+ </div>
+ </div>`;
+ return;
+ }
 
-    // SPOT
-    const s = getSpot(node.id);
-    if(!s) return;
-    html += `
-    <div class="timeline-item">
-      <div class="tl-left">
-        <div class="tl-time">${node.time}</div>
-        <div class="tl-dot-wrap">
-          <div class="tl-dot"></div>
-          ${!isLast?'<div class="tl-line"></div>':''}
-        </div>
-      </div>
-      <div class="tl-right">
-        <div class="tl-card" onclick="showSpotModal('${s.id}')">
-          <div class="tl-card-nav" onclick="event.stopPropagation();vibrate();openMapsLatLon(${s.lat},${s.lon})">🗺</div>
-          <div class="tl-card-type">🏛 景點</div>
-          <div class="tl-card-name">${s.name}</div>
-          <div class="tl-meta">
-            <div class="meta-chip hours">⏰ ${s.hours}</div>
-            <div class="meta-chip stay">⏱ 停留 ${s.stay} 分鐘</div>
-            <div class="meta-chip budget">🎫 ${s.ticket}</div>
-          </div>
-          <div class="tl-meta">
-            <div class="meta-chip addr">📍 ${s.addr}</div>
-          </div>
-          ${s.phone?`<div class="tl-meta"><div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${s.phone}')">📞 ${s.phone}</div></div>`:''}
-          ${node.note?`<div style="font-size:11px;color:var(--gold-light);margin-top:4px">⚠️ ${node.note}</div>`:''}
-          ${node.travelNext?`<div class="tl-travel" style="margin-top:8px">🛵 前往下一站約 ${node.travelNext}</div>`:''}
-        </div>
-      </div>
-    </div>`;
-  });
+ if(node.type === 'hotel') {
+ html += `
+ <div class="timeline-item">
+ <div class="tl-left">
+ <div class="tl-time">${node.time}</div>
+ <div class="tl-dot-wrap">
+ <div class="tl-dot hotel"></div>
+ ${!isLast?'<div class="tl-line"></div>':''}
+ </div>
+ </div>
+ <div class="tl-right">
+ <div class="tl-card hotel-card">
+ <div class="tl-card-nav" onclick="openMaps('${HOTEL.address}')">🏠</div>
+ <div class="tl-card-type">住宿</div>
+ <div class="tl-card-name">${HOTEL.name}</div>
+ <div class="tl-meta">
+ <div class="meta-chip addr">📍 ${HOTEL.address}</div>
+ </div>
+ <div class="tl-meta">
+ <div class="meta-chip phone" onclick="callPhone('${HOTEL.phone}')">📞 ${HOTEL.phone}</div>
+ </div>
+ <div style="font-size:11px;color:var(--text3)">${node.note}</div>
+ </div>
+ </div>
+ </div>`;
+ return;
+ }
 
-  container.innerHTML = html;
+ if(node.type === 'food') {
+ const f = getFood(node.id);
+ if(!f) return;
+ html += `
+ <div class="timeline-item">
+ <div class="tl-left">
+ <div class="tl-time">${node.time}</div>
+ <div class="tl-dot-wrap">
+ <div class="tl-dot food"></div>
+ ${!isLast?'<div class="tl-line"></div>':''}
+ </div>
+ </div>
+ <div class="tl-right">
+ <div class="tl-card food-card" onclick="showFoodModal('${f.id}')">
+ <div class="tl-card-nav" onclick="event.stopPropagation();openMaps('${f.addr||f.name+',金門'}')">🗺️</div>
+ <div class="tl-card-type">🍜 ${node.note || '美食'}</div>
+ <div class="tl-card-name">${f.name}</div>
+ <div class="tl-meta">
+ <div class="meta-chip hours">🕐 ${f.hours}</div>
+ <div class="meta-chip budget">💰 ${f.price}</div>
+ </div>
+ <div class="tl-meta">
+ <div class="meta-chip addr">📍 ${f.addr}</div>
+ </div>
+ ${f.phone?`<div class="tl-meta"><div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 ${f.phone}</div></div>`:''}
+ </div>
+ </div>
+ </div>`;
+ return;
+ }
+
+ // SPOT
+ const s = getSpot(node.id);
+ if(!s) return;
+ html += `
+ <div class="timeline-item">
+ <div class="tl-left">
+ <div class="tl-time">${node.time}</div>
+ <div class="tl-dot-wrap">
+ <div class="tl-dot"></div>
+ ${!isLast?'<div class="tl-line"></div>':''}
+ </div>
+ </div>
+ <div class="tl-right">
+ <div class="tl-card" onclick="showSpotModal('${s.id}')">
+ <div class="tl-card-nav" onclick="event.stopPropagation();openMaps('${s.addr||s.name+',金門'}')">🗺️</div>
+ <div class="tl-card-type">🏛️ 景點</div>
+ <div class="tl-card-name">${s.name}</div>
+ <div class="tl-meta">
+ <div class="meta-chip hours">🕐 ${s.hours}</div>
+ <div class="meta-chip stay">⏱ 停留 ${s.stay} 分鐘</div>
+ <div class="meta-chip budget">🎫 ${s.ticket}</div>
+ </div>
+ <div class="tl-meta">
+ <div class="meta-chip addr">📍 ${s.addr}</div>
+ </div>
+ ${s.phone?`<div class="tl-meta"><div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${s.phone}')">📞 ${s.phone}</div></div>`:''}
+ ${node.note?`<div style="font-size:11px;color:var(--gold-light);margin-top:4px">⚠️ ${node.note}</div>`:''}
+ ${node.travelNext?`<div class="tl-travel" style="margin-top:8px">🛵 前往下一站約 ${node.travelNext}</div>`:''}
+ </div>
+ </div>
+ </div>`;
+ });
+
+ container.innerHTML = html;
 }
 
 // ══════════════════════════════════════════
 // FOOD PAGE
 // ══════════════════════════════════════════
 const CAT_LABELS = {
-  snack:'在地小吃', dessert:'甜點飲品', gift:'必買伴手禮',
-  bar:'金門酒吧', trad:'傳統老店', innov:'創新口味'
+ snack:'在地小吃', dessert:'甜點飲品', gift:'必買伴手禮',
+ bar:'金門酒吧', trad:'傳統老店', innov:'創新口味'
 };
 const CAT_BADGE_CLASS = {
-  snack:'badge-snack', dessert:'badge-dessert', gift:'badge-gift',
-  bar:'badge-bar', trad:'badge-trad', innov:'badge-innov'
+ snack:'badge-snack', dessert:'badge-dessert', gift:'badge-gift',
+ bar:'badge-bar', trad:'badge-trad', innov:'badge-innov'
 };
 
 function switchFoodCat(cat) {
-  currentFoodCat = cat;
-  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
-  const tabs = document.querySelectorAll('.cat-tab');
-  const catOrder = ['all','snack','dessert','trad','innov','gift','bar'];
-  tabs[catOrder.indexOf(cat)]?.classList.add('active');
-  renderFood();
+ currentFoodCat = cat;
+ document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+ const tabs = document.querySelectorAll('.cat-tab');
+ const catOrder = ['all','snack','dessert','trad','innov','gift','bar'];
+ tabs[catOrder.indexOf(cat)]?.classList.add('active');
+ renderFood();
 }
 
 function renderFood() {
-  const allItems = [...FOODS, ...BARS];
-  const filtered = currentFoodCat==='all' ? allItems : allItems.filter(f=>f.cat===currentFoodCat);
-  const grid = document.getElementById('food-grid');
-  if(filtered.length===0){ grid.innerHTML='<div class="empty-state">此分類暫無資料</div>'; return; }
-  grid.innerHTML = filtered.map(f=>`
-    <div class="food-card" onclick="showFoodModal('${f.id}')">
-      <div class="food-card-top">
-        <div class="food-name">${f.name}</div>
-        <div class="food-cat-badge ${CAT_BADGE_CLASS[f.cat]||'badge-snack'}">${CAT_LABELS[f.cat]||f.cat}</div>
-      </div>
-      <div class="food-meta">
-        <div class="meta-chip hours">⏰ ${f.hours}</div>
-        <div class="meta-chip budget">💰 ${f.price}</div>
-        ${f.phone?`<div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 ${f.phone}</div>`:''}
-      </div>
-      <div class="food-addr">📍 ${f.addr}</div>
-      <div class="food-card-actions">
-        <div class="action-btn primary" onclick="event.stopPropagation();openMaps('${f.addr||f.name+',金門'}')">🗺 導航</div>
-        ${f.phone?`<div class="action-btn red" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 撥打</div>`:''}
-        <div class="action-btn" onclick="event.stopPropagation();showFoodModal('${f.id}')">詳情</div>
-      </div>
-    </div>
-  `).join('');
+ const allItems = [...FOODS, ...BARS];
+ const filtered = currentFoodCat==='all' ? allItems : allItems.filter(f=>f.cat===currentFoodCat);
+ const grid = document.getElementById('food-grid');
+ if(filtered.length===0){
+ grid.innerHTML='<div class="empty-state">此分類暫無資料</div>';
+ return;
+ }
+ grid.innerHTML = filtered.map(f=>`
+ <div class="food-card" onclick="showFoodModal('${f.id}')">
+ <div class="food-card-top">
+ <div class="food-name">${f.name}</div>
+ <div class="food-cat-badge ${CAT_BADGE_CLASS[f.cat]||'badge-snack'}">${CAT_LABELS[f.cat]||f.cat}</div>
+ </div>
+ <div class="food-meta">
+ <div class="meta-chip hours">🕐 ${f.hours}</div>
+ <div class="meta-chip budget">💰 ${f.price}</div>
+ ${f.phone?`<div class="meta-chip phone" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 ${f.phone}</div>`:''}
+ </div>
+ <div class="food-addr">📍 ${f.addr}</div>
+ <div class="food-card-actions">
+ <div class="action-btn primary" onclick="event.stopPropagation();openMaps('${f.addr||f.name+',金門'}')">🗺️ 導航</div>
+ ${f.phone?`<div class="action-btn red" onclick="event.stopPropagation();callPhone('${f.phone}')">📞 撥打</div>`:''}
+ <div class="action-btn" onclick="event.stopPropagation();showFoodModal('${f.id}')">詳情</div>
+ </div>
+ </div>
+ `).join('');
 }
 
 // ══════════════════════════════════════════
 // MODALS
 // ══════════════════════════════════════════
 function showSpotModal(id) {
-  const s = getSpot(id);
-  if(!s) return;
-  const content = `
-    <div class="modal-title">${s.name}</div>
-    <div class="modal-subtitle">🏛 景點詳情</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="info-row"><div class="info-row-label">營業時間</div><div class="info-row-val" style="color:var(--green-bright)">${s.hours}</div></div>
-      <div class="info-row"><div class="info-row-label">建議停留</div><div class="info-row-val">${s.stay} 分鐘</div></div>
-      <div class="info-row"><div class="info-row-label">門票</div><div class="info-row-val" style="color:var(--gold-light)">${s.ticket}</div></div>
-      <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">${s.addr}</div></div>
-      ${s.phone?`<div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:${s.phone}">${s.phone}</a></div></div>`:''}
-    </div>
-    <div style="display:flex;gap:8px;margin-top:16px">
-      <button class="nav-btn" onclick="vibrate();openMapsLatLon(${s.lat},${s.lon})">🗺 一鍵導航</button>
-      ${s.phone?`<button class="nav-btn" style="background:var(--red);color:#fff" onclick="callPhone('${s.phone}')">📞 撥打</button>`:''}
-    </div>`;
-  openModal(content);
+ const s = getSpot(id);
+ if(!s) return;
+ const content = `
+ <div class="modal-title">${s.name}</div>
+ <div class="modal-subtitle">🏛️ 景點詳情</div>
+ <div style="display:flex;flex-direction:column;gap:8px">
+ <div class="info-row"><div class="info-row-label">營業時間</div><div class="info-row-val" style="color:var(--green-bright)">${s.hours}</div></div>
+ <div class="info-row"><div class="info-row-label">建議停留</div><div class="info-row-val">${s.stay} 分鐘</div></div>
+ <div class="info-row"><div class="info-row-label">門票</div><div class="info-row-val" style="color:var(--gold-light)">${s.ticket}</div></div>
+ <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">${s.addr}</div></div>
+ ${s.phone?`<div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:${s.phone}">${s.phone}</a></div></div>`:''}
+ </div>
+ <div style="display:flex;gap:8px;margin-top:16px">
+ <button class="nav-btn" onclick="openMaps('${s.addr}')">🗺️ 一鍵導航</button>
+ ${s.phone?`<button class="nav-btn" style="background:var(--red);color:#fff" onclick="callPhone('${s.phone}')">📞 撥打</button>`:''}
+ </div>`;
+ openModal(content);
 }
 
 function showFoodModal(id) {
-  const allItems = [...FOODS, ...BARS];
-  const f = allItems.find(x=>x.id===id);
-  if(!f) return;
-  const content = `
-    <div class="modal-title">${f.name}</div>
-    <div class="modal-subtitle">${CAT_LABELS[f.cat] || '美食'}</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.7">${f.desc}</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="info-row"><div class="info-row-label">營業時間</div><div class="info-row-val" style="color:var(--green-bright)">${f.hours}</div></div>
-      <div class="info-row"><div class="info-row-label">價格</div><div class="info-row-val" style="color:var(--gold-light)">${f.price}</div></div>
-      <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">${f.addr}</div></div>
-      ${f.phone?`<div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:${f.phone}">${f.phone}</a></div></div>`:''}
-    </div>
-    <div style="display:flex;gap:8px;margin-top:16px">
-      <button class="nav-btn" onclick="vibrate();openMaps('${f.addr}')">🗺 導航前往</button>
-      ${f.phone?`<button class="nav-btn" style="background:var(--red);color:#fff" onclick="callPhone('${f.phone}')">📞 立刻撥打</button>`:''}
-    </div>`;
-  openModal(content);
+ const allItems = [...FOODS, ...BARS];
+ const f = allItems.find(x=>x.id===id);
+ if(!f) return;
+ const content = `
+ <div class="modal-title">${f.name}</div>
+ <div class="modal-subtitle">${CAT_BADGE_CLASS[f.cat] ? CAT_LABELS[f.cat] : '美食'}</div>
+ <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.7">${f.desc}</div>
+ <div style="display:flex;flex-direction:column;gap:8px">
+ <div class="info-row"><div class="info-row-label">營業時間</div><div class="info-row-val" style="color:var(--green-bright)">${f.hours}</div></div>
+ <div class="info-row"><div class="info-row-label">價格</div><div class="info-row-val" style="color:var(--gold-light)">${f.price}</div></div>
+ <div class="info-row"><div class="info-row-label">地址</div><div class="info-row-val">${f.addr}</div></div>
+ ${f.phone?`<div class="info-row"><div class="info-row-label">電話</div><div class="info-row-val"><a href="tel:${f.phone}">${f.phone}</a></div></div>`:''}
+ </div>
+ <div style="display:flex;gap:8px;margin-top:16px">
+ <button class="nav-btn" onclick="openMaps('${f.addr}')">🗺️ 導航前往</button>
+ ${f.phone?`<button class="nav-btn" style="background:var(--red);color:#fff" onclick="callPhone('${f.phone}')">📞 立刻撥打</button>`:''}
+ </div>`;
+ openModal(content);
 }
 
 function openModal(html) {
-  vibrate();
-  document.getElementById('modal-content').innerHTML = html;
-  document.getElementById('modal').classList.add('open');
+ document.getElementById('modal-content').innerHTML = html;
+ document.getElementById('modal').classList.add('open');
 }
+
 function closeModal(e, force) {
-  if(force || (e && e.target.id==='modal')) {
-    vibrate(30);
-    document.getElementById('modal').classList.remove('open');
-  }
+ if(force || (e && e.target.id==='modal')) {
+ document.getElementById('modal').classList.remove('open');
+ }
 }
 
 // ══════════════════════════════════════════
 // CLOCK
 // ══════════════════════════════════════════
 function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('currentTime').textContent = `${h}:${m}`;
+ const now = new Date();
+ const h = String(now.getHours()).padStart(2,'0');
+ const m = String(now.getMinutes()).padStart(2,'0');
+ document.getElementById('currentTime').textContent = `${h}:${m}`;
 }
 setInterval(updateClock, 10000);
 updateClock();
 
 // ══════════════════════════════════════════
-// ★1. 震動回饋
-// ══════════════════════════════════════════
-function vibrate(ms) {
-  try { if(navigator.vibrate) navigator.vibrate(ms || 50); } catch(e){}
-}
-
-// ══════════════════════════════════════════
-// ★2. openMapsLatLon — 使用座標開啟 Google Maps 導航
-// ══════════════════════════════════════════
-function openMapsLatLon(lat, lon) {
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
-  window.open(url, '_blank');
-  showToast('正在開啟 Google Maps 導航…');
-}
-
-// ══════════════════════════════════════════
-// ★ GPS 全域狀態
-// ══════════════════════════════════════════
-let _userLat = null, _userLon = null;
-let _nextSpotForNav = null; // 儲存下一站景點供一鍵導航使用
-
-function haversine(lat1,lon1,lat2,lon2){
-  const R=6371, toRad=d=>d*Math.PI/180;
-  const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
-  const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-}
-
-function updateGPSUI(userLat, userLon) {
-  let nearest = null, minDist = Infinity;
-  SPOTS.forEach(s=>{
-    const d = haversine(userLat,userLon,s.lat,s.lon);
-    if(d<minDist){ minDist=d; nearest=s; }
-  });
-  const todaySpots = SCHEDULE[0].nodes.filter(n=>n.type==='spot').map(n=>getSpot(n.id)).filter(Boolean);
-  const nextSpot = todaySpots[1] || todaySpots[0];
-  _nextSpotForNav = nextSpot || null;
-  const nextDist = nextSpot ? haversine(userLat,userLon,nextSpot.lat,nextSpot.lon) : 0;
-  const motoMin = Math.max(3, Math.round(nextDist/30*60));
-  document.getElementById('currentSpot').textContent = `📍 ${nearest?.name || '未知位置'} 附近`;
-  document.getElementById('nextSpotInfo').textContent = `⏱ 下一站：${nextSpot?.name||'--'} · 機車約 ${motoMin} 分鐘`;
-  document.getElementById('distKm').textContent = nextDist.toFixed(1);
-  document.getElementById('travelMin').textContent = motoMin;
-}
-
-// ★ 一鍵導航至下一站（使用真實座標）
-function navigateToNext() {
-  if(_nextSpotForNav) {
-    openMapsLatLon(_nextSpotForNav.lat, _nextSpotForNav.lon);
-  } else {
-    openMaps('金門縣金城鎮,金門');
-  }
-}
-
-// ══════════════════════════════════════════
-// ★1. 真實 GPS 定位
+// GPS SIMULATION (demo - real app uses navigator.geolocation)
 // ══════════════════════════════════════════
 function simulateGPS() {
-  // 備用：靜態模擬（在金城莒光樓附近）
-  _userLat = 24.4320; _userLon = 118.3190;
-  updateGPSUI(_userLat, _userLon);
+ function haversine(lat1,lon1,lat2,lon2){
+ const R=6371, toRad=d=>d*Math.PI/180;
+ const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
+ const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+ return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+ }
+
+ // Demo: simulate near 莒光樓
+ const userLat = 24.4320, userLon = 118.3190;
+ let nearest = null, minDist = Infinity;
+ SPOTS.forEach(s=>{
+ const d = haversine(userLat,userLon,s.lat,s.lon);
+ if(d<minDist){ minDist=d; nearest=s; }
+ });
+
+ // Find next spot in today's schedule
+ const todaySpots = SCHEDULE[0].nodes.filter(n=>n.type==='spot').map(n=>getSpot(n.id)).filter(Boolean);
+ const nextSpot = todaySpots[1] || todaySpots[0];
+ const nextDist = nextSpot ? haversine(userLat,userLon,nextSpot.lat,nextSpot.lon) : 0;
+ const motoMin = Math.max(3, Math.round(nextDist/30*60));
+
+ document.getElementById('currentSpot').textContent = `📍 ${nearest?.name || '未知位置'} 附近`;
+ document.getElementById('nextSpotInfo').textContent = `🕐 下一站：${nextSpot?.name||'--'} · 機車約 ${motoMin} 分鐘`;
+ document.getElementById('distKm').textContent = nextDist.toFixed(1);
+ document.getElementById('travelMin').textContent = motoMin;
 }
 
+// Real GPS
 if(navigator.geolocation){
-  document.querySelector('.hero-gps').innerHTML = '<div class="gps-dot"></div> 正在取得 GPS 位置…';
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      _userLat = pos.coords.latitude;
-      _userLon = pos.coords.longitude;
-      updateGPSUI(_userLat, _userLon);
-      document.querySelector('.hero-gps').innerHTML = '<div class="gps-dot"></div> GPS 即時定位中';
-      // 持續追蹤
-      navigator.geolocation.watchPosition(p=>{
-        _userLat = p.coords.latitude;
-        _userLon = p.coords.longitude;
-        updateGPSUI(_userLat, _userLon);
-      }, null, { enableHighAccuracy:true, maximumAge:30000 });
-    },
-    () => {
-      simulateGPS();
-      document.querySelector('.hero-gps').innerHTML = '<div class="gps-dot"></div> GPS 模擬中（無授權）';
-    },
-    { enableHighAccuracy:true, timeout:8000 }
-  );
-} else {
-  simulateGPS();
-}
-
-// ══════════════════════════════════════════
-// ★5. 狀態記憶 — 讀取上次選取的 Day
-// ══════════════════════════════════════════
-(function restoreLastDay(){
-  try {
-    const saved = localStorage.getItem('kinmen_lastDay');
-    if(saved !== null){
-      const d = parseInt(saved, 10);
-      if(d >= 0 && d <= 3){ currentDay = d; }
-    }
-  } catch(e){}
-})();
+ navigator.geolocation.getCurrentPosition(pos=>{
+ // Would use real coords here
+ }, ()=>{ simulateGPS(); });
+} else { simulateGPS(); }
+simulateGPS();
 
 // Init
 renderTimeline();
 renderFood();
 </script>
+
 </body>
 </html>
